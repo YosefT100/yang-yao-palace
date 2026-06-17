@@ -19,8 +19,9 @@ export async function POST(req: NextRequest) {
       cancel_url: `${req.headers.get("origin")}/?payment=cancelled`,
     });
     return NextResponse.json({ url: session.url });
-  } catch (error: any) {
-    console.error("Stripe error:", error.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    console.error("Stripe error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

@@ -11,6 +11,7 @@ export async function middleware(request: NextRequest) {
     PUBLIC_PATHS.includes(pathname) ||
     pathname.startsWith("/auth") ||
     pathname.startsWith("/api/stripe/webhook") ||
+    pathname.startsWith("/api/create-checkout") ||
     pathname.startsWith("/_next") ||
     pathname.startsWith("/favicon");
 
