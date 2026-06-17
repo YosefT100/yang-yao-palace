@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { formatDateTime } from "@/lib/utils";
 import JoinLesson from "@/components/JoinLesson";
+import RecordingsLibrary from "@/components/RecordingsLibrary";
 
 export default async function StudentGroupPage({ params }: { params: { id: string } }) {
   const supabase = createClient();
@@ -50,6 +51,11 @@ export default async function StudentGroupPage({ params }: { params: { id: strin
                   <span className="text-palace-dark/40">Material TBA</span>
                 )}
               </div>
+              {l.status === "completed" && (
+                <div className="mt-2 w-full pl-2">
+                  <RecordingsLibrary roomName={l.id} />
+                </div>
+              )}
             </li>
           ))}
           {!lessons?.length && <li className="py-2 text-palace-dark/50">No lessons scheduled yet.</li>}

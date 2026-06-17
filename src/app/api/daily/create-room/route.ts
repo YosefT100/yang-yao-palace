@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         name: roomName,
         privacy: "private",
-        properties: { exp: Math.floor(Date.now() / 1000) + 7200 },
+        properties: { exp: Math.floor(Date.now() / 1000) + 7200, enable_recording: "cloud" },
       }),
     });
     const data = await res.json();
