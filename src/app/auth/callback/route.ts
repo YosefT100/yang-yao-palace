@@ -8,18 +8,23 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = createClient();
     await supabase.auth.exchangeCodeForSession(code);
+
+    const { data: auth } = await supabase.auth.getUser();
+    if (auth.user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", auth.user.id)
+        .single();
+
+      const dest =
+        profile?.role === "admin" ? "/admin" :
+        profile?.role === "teacher" ? "/teacher" :
+        "/student";
+
+      return NextResponse.redirect(`${origin}${dest}`);
+    }
   }
 
-  // Preserve enroll params through the OAuth callback
-  const enroll = searchParams.get("enroll");
-  if (enroll === "1") {
-    const level = searchParams.get("level") ?? "";
-    const price = searchParams.get("price") ?? "";
-    const name = searchParams.get("name") ?? "";
-    return NextResponse.redirect(
-      `${origin}/?enroll=1&level=${encodeURIComponent(level)}&price=${encodeURIComponent(price)}&name=${encodeURIComponent(name)}`
-    );
-  }
-
-  return NextResponse.redirect(`${origin}/`);
+  return NextResponse.redirect(`${origin}/login`);
 }

@@ -5,12 +5,9 @@ import { createClient } from "@/lib/supabase/client";
 export default function GoogleSignInButton() {
   async function handleClick() {
     const supabase = createClient();
-    // Preserve enroll params through the OAuth redirect
-    const search = window.location.search;
-    const callbackUrl = `${window.location.origin}/auth/callback${search}`;
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: callbackUrl },
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
   }
 

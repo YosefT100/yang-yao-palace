@@ -22,15 +22,6 @@ export async function signInAction(formData: FormData) {
     .single();
 
   revalidatePath("/", "layout");
-
-  const enroll = formData.get("enroll");
-  if (enroll === "1") {
-    const level = formData.get("level");
-    const price = formData.get("price");
-    const name = formData.get("name");
-    redirect(`/?enroll=1&level=${level}&price=${price}&name=${encodeURIComponent(String(name))}`);
-  }
-
   const dest =
     profile?.role === "admin" ? "/admin" : profile?.role === "teacher" ? "/teacher" : "/student";
   redirect(dest);

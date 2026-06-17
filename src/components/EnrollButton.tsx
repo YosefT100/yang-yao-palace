@@ -7,21 +7,14 @@ const HSK_PRICES: Record<string, number> = {
 };
 
 export default function EnrollButton({ level, name, label }: { level: string; name: string; label: string }) {
-  const levelKey = level.replace(/\s/g, "");
-  const price = HSK_PRICES[levelKey];
+  const price = HSK_PRICES[level.replace(/\s/g, "")];
 
   async function handleClick() {
     const supabase = createClient();
     const { data } = await supabase.auth.getUser();
 
     if (!data.user) {
-      const params = new URLSearchParams({
-        enroll: "1",
-        level,
-        price: String(price),
-        name,
-      });
-      window.location.href = `/login?${params.toString()}`;
+      window.location.href = "/login";
       return;
     }
 
