@@ -5,26 +5,25 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
 
-  if (code) {
-    const supabase = createClient();
-    await supabase.auth.exchangeCodeForSession(code);
+  if (!code) return NextResponse.redirect(`${origin}/login`);
 
-    const { data: auth } = await supabase.auth.getUser();
-    if (auth.user) {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", auth.user.id)
-        .single();
+  const supabase = createClient();
+  const { error } = await supabase.auth.exchangeCodeForSession(code);
 
-      const dest =
-        profile?.role === "admin" ? "/admin" :
-        profile?.role === "teacher" ? "/teacher" :
-        "/student";
-
-      return NextResponse.redirect(`${origin}${dest}`);
-    }
+  if (error) {
+    console.error("Auth callback error:", error.message);
+    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`);
   }
 
-  return NextResponse.redirect(`${origin}/login`);
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.redirect(`${origin}/login`);
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  const dest = profile?.role === "admin" ? "/admin" : profile?.role === "teacher" ? "/teacher" : "/student";
+  return NextResponse.redirect(`${origin}${dest}`);
 }
