@@ -3,10 +3,10 @@ import {
   selectLessonMaterialAction,
   updateLessonNotesAction,
   createTeacherMaterialAction,
+  updateMeetingLinkAction,
 } from "@/app/teacher/actions";
 import { formatDateTime } from "@/lib/utils";
 import { HSKCurriculum } from "@/components/HSKCurriculum";
-import StartVideoLesson from "@/components/StartVideoLesson";
 import RecordingsLibrary from "@/components/RecordingsLibrary";
 
 export default async function TeacherLessonPage({ params }: { params: { lessonId: string } }) {
@@ -66,10 +66,27 @@ export default async function TeacherLessonPage({ params }: { params: { lessonId
         </p>
       </div>
 
-      {/* Video lesson */}
+      {/* Meeting link */}
       <div className="card">
-        <h2 className="mb-3 text-lg font-semibold">Video Lesson</h2>
-        <StartVideoLesson lessonId={params.lessonId} />
+        <h2 className="mb-3 text-lg font-semibold">Meeting Link</h2>
+        {(lesson as any).meeting_link && (
+          <p className="mb-3 text-sm">
+            Current:{" "}
+            <a href={(lesson as any).meeting_link} target="_blank" className="text-palace-red hover:underline break-all">
+              {(lesson as any).meeting_link}
+            </a>
+          </p>
+        )}
+        <form action={updateMeetingLinkAction} className="flex gap-2">
+          <input type="hidden" name="lesson_id" value={lesson.id} />
+          <input
+            className="input flex-1"
+            name="meeting_link"
+            placeholder="Paste VooV / Zoom link…"
+            defaultValue={(lesson as any).meeting_link ?? ""}
+          />
+          <button type="submit" className="btn-primary">Save</button>
+        </form>
       </div>
 
       {/* Recordings */}

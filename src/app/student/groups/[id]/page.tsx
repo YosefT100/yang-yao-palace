@@ -1,6 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
 import { formatDateTime } from "@/lib/utils";
-import JoinLesson from "@/components/JoinLesson";
 import RecordingsLibrary from "@/components/RecordingsLibrary";
 
 export default async function StudentGroupPage({ params }: { params: { id: string } }) {
@@ -14,7 +13,7 @@ export default async function StudentGroupPage({ params }: { params: { id: strin
 
   const { data: lessons } = await supabase
     .from("lessons")
-    .select("*, material:materials(title, file_url)")
+    .select("*, material:materials(title, file_url), meeting_link")
     .eq("group_id", params.id)
     .order("scheduled_at");
 
@@ -42,7 +41,11 @@ export default async function StudentGroupPage({ params }: { params: { id: strin
                 {formatDateTime(l.scheduled_at)} — {l.title}
               </span>
               <div className="flex shrink-0 items-center gap-3">
-                {l.status === "scheduled" && <JoinLesson roomName={l.id} />}
+                {l.status === "scheduled" && (
+                  l.meeting_link
+                    ? <a href={l.meeting_link} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs">▶ Join Lesson</a>
+                    : <span className="text-xs text-palace-dark/40">Link coming soon</span>
+                )}
                 {l.material?.file_url ? (
                   <a href={l.material.file_url} target="_blank" className="text-palace-red hover:underline">
                     {l.material.title}

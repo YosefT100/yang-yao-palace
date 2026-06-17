@@ -77,6 +77,16 @@ export async function updateLessonNotesAction(formData: FormData) {
   revalidatePath("/teacher/schedule");
 }
 
+export async function updateMeetingLinkAction(formData: FormData) {
+  const supabase = createClient();
+  const lessonId = String(formData.get("lesson_id"));
+  await supabase
+    .from("lessons")
+    .update({ meeting_link: String(formData.get("meeting_link") || "") })
+    .eq("id", lessonId);
+  revalidatePath(`/teacher/lessons/${lessonId}`);
+}
+
 // ---------------------------------------------------------------------------
 // Teacher's own materials library
 // ---------------------------------------------------------------------------
