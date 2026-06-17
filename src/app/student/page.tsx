@@ -4,6 +4,11 @@ import { formatPrice, formatDateTime } from "@/lib/utils";
 import { CheckoutButton } from "@/components/CheckoutButton";
 import { getLocale } from "@/lib/i18n-server";
 import { t } from "@/lib/i18n";
+import EnrollButton from "@/components/EnrollButton";
+
+const HSK_PRICES: Record<string, string> = {
+  HSK1: "$460", HSK2: "$460", HSK3: "$800", HSK4: "$800", HSK5: "$1,800", HSK6: "$2,000",
+};
 
 export default async function StudentHomePage() {
   const tr = t(getLocale()).pages;
@@ -94,18 +99,22 @@ export default async function StudentHomePage() {
       <div className="card">
         <h2 className="mb-3 text-lg font-semibold">Available HSK courses</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {courses?.map((c) => (
-            <div key={c.id} className="rounded-lg border border-black/5 p-4">
-              <div className="flex items-center justify-between">
-                <h3 className="font-bold text-palace-red">{c.level}</h3>
-                <span className="text-sm font-semibold text-palace-gold">{formatPrice(c.price_amount, c.price_currency)}/mo</span>
+          {courses?.map((c) => {
+            const levelKey = (c.level as string).replace(/\s/g, "");
+            const price = HSK_PRICES[levelKey] ?? formatPrice(c.price_amount, c.price_currency);
+            return (
+              <div key={c.id} className="rounded-lg border border-black/5 p-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-palace-red">{c.level}</h3>
+                  <span className="text-sm font-semibold text-palace-gold">{price} / course</span>
+                </div>
+                <p className="mt-1 text-sm text-palace-dark/60">{c.name}</p>
+                <div className="mt-3">
+                  <EnrollButton level={c.level as string} name={c.name as string} label="Enroll" />
+                </div>
               </div>
-              <p className="mt-1 text-sm text-palace-dark/60">{c.name}</p>
-              <p className="mt-2 text-xs text-palace-dark/50">
-                Contact the academy to be placed in a group for this level.
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
