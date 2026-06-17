@@ -5,7 +5,9 @@
       "Bash(timeout 15 npm run dev)",
       "Bash(npm run *)",
       "Bash(npm install *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(python3 *)",
+      "PowerShell([System.IO.File]::ReadAllText\\(\"C:\\\\Users\\\\asus\\\\Desktop\\\\yang-yao-palace\\\\src\\\\app\\\\page.tsx\"\\) | Select-String -Pattern \"HSK 1\" | ForEach-Object { $_.Line | Format-Hex })"
     ]
   }
 }

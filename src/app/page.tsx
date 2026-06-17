@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice } from "@/lib/utils";
 import type { Course } from "@/types/database";
@@ -6,6 +6,7 @@ import { getLocale } from "@/lib/i18n-server";
 import { t } from "@/lib/i18n";
 import EnrollButton from "@/components/EnrollButton";
 import PendingEnrollHandler from "@/components/PendingEnrollHandler";
+import TrialForm from "@/components/TrialForm";
 
 export const dynamic = "force-dynamic";
 
@@ -159,6 +160,20 @@ export default async function HomePage({
         </div>
       </section>
 
+      {/* ── Free Trial ────────────────────────────────────────────── */}
+      <section className="bg-palace-cream py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-10 text-center">
+            <h2 className="font-serif text-3xl font-bold text-palace-dark">Try Before You Commit 🎯</h2>
+            <div className="mx-auto mt-3 h-0.5 w-16 bg-palace-gold" />
+            <p className="mx-auto mt-4 max-w-xl text-palace-dark/60">
+              Book a free 30-minute trial lesson with one of our native Chinese teachers.
+            </p>
+          </div>
+          <TrialForm />
+        </div>
+      </section>
+
       {/* ── 1:1 Private Lessons ───────────────────────────────────── */}
       <section className="bg-white py-20">
         <div className="mx-auto max-w-6xl px-6">
@@ -171,16 +186,17 @@ export default async function HomePage({
           </div>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {[
-              { level: "Beginner", range: "HSK 1–2", price: "$45" },
-              { level: "Intermediate", range: "HSK 3–4", price: "$60" },
-              { level: "Advanced", range: "HSK 5–6", price: "$80" },
-            ].map(({ level, range, price }) => (
+              { level: "Beginner", range: "HSK 1-2", fullPrice: "$765", installment: "$192", levelKey: "HSK1_1ON1", instKey: "HSK1_1ON1_INST", name: "Beginner 1-on-1 (HSK 1-2)" },
+              { level: "Intermediate", range: "HSK 3-4", fullPrice: "$1,320", installment: "$330", levelKey: "HSK3_1ON1", instKey: "HSK3_1ON1_INST", name: "Intermediate 1-on-1 (HSK 3-4)" },
+              { level: "Advanced", range: "HSK 5-6", fullPrice: "$3,360", installment: "$840", levelKey: "HSK6_1ON1", instKey: "HSK6_1ON1_INST", name: "Advanced 1-on-1 (HSK 5-6)" },
+            ].map(({ level, range, fullPrice, installment, levelKey, instKey, name }) => (
               <div key={level} className="card flex flex-col border-l-4 border-palace-gold">
                 <div className="mb-1 flex items-center justify-between">
                   <h3 className="text-lg font-bold text-palace-red">{level}</h3>
-                  <span className="text-sm font-semibold text-palace-gold">{price} / lesson</span>
+                  <span className="text-sm font-semibold text-palace-gold">{fullPrice}</span>
                 </div>
                 <p className="mb-1 text-sm font-medium text-palace-dark/80">{range}</p>
+                <p className="mb-1 text-xs text-palace-dark/50">or 4 installments of {installment}</p>
                 <p className="mb-3 text-xs italic text-palace-dark/40">Includes everything in group courses + more</p>
                 <div className="my-2 border-t border-gray-100" />
                 <ul className="mb-4 flex-1 space-y-1.5">
@@ -191,9 +207,10 @@ export default async function HomePage({
                     </li>
                   ))}
                 </ul>
-                <Link href="/signup" className="btn-primary w-full justify-center text-center">
-                  {tr.enroll}
-                </Link>
+                <div className="flex flex-col gap-2">
+                  <EnrollButton level={levelKey} name={name} label="Pay in Full" />
+                  <EnrollButton level={instKey} name={name + " - Installment"} label={"Pay in 4 x " + installment} />
+                </div>
               </div>
             ))}
           </div>
