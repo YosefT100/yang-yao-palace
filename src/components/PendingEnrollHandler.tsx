@@ -1,8 +1,6 @@
 "use client";
-
 import { useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { startCheckout } from "@/components/EnrollButton";
 
 export default function PendingEnrollHandler() {
   useEffect(() => {
@@ -14,7 +12,13 @@ export default function PendingEnrollHandler() {
       if (!data.user) return;
       sessionStorage.removeItem("pendingEnroll");
       const { courseLevel, coursePrice, courseName } = JSON.parse(raw);
-      startCheckout(courseLevel, coursePrice, courseName);
+      fetch("/api/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courseLevel, coursePrice, courseName }),
+      })
+        .then(r => r.json())
+        .then(({ url }) => { if (url) window.location.href = url; });
     });
   }, []);
 
