@@ -5,6 +5,7 @@ import type { Course } from "@/types/database";
 import { getLocale } from "@/lib/i18n-server";
 import { t } from "@/lib/i18n";
 import EnrollButton from "@/components/EnrollButton";
+import PendingEnrollHandler from "@/components/PendingEnrollHandler";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,7 @@ export default async function HomePage({
 
   return (
     <main>
+      <PendingEnrollHandler />
       {/* ── Hero ──────────────────────────────────────────────────── */}
       <section
         className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden text-center text-white"

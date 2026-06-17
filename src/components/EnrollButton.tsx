@@ -1,8 +1,20 @@
 "use client";
 
+import { createClient } from "@/lib/supabase/client";
+
 const HSK_PRICES: Record<string, number> = {
   HSK1: 460, HSK2: 460, HSK3: 800, HSK4: 800, HSK5: 1800, HSK6: 2000,
 };
+
+export async function startCheckout(courseLevel: string, coursePrice: number, courseName: string) {
+  const res = await fetch("/api/create-checkout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ courseLevel, coursePrice, courseName }),
+  });
+  const { url } = await res.json();
+  if (url) window.location.href = url;
+}
 
 export default function EnrollButton({
   level,
@@ -17,13 +29,19 @@ export default function EnrollButton({
   const price = HSK_PRICES[levelKey];
 
   async function handleClick() {
-    const res = await fetch("/api/create-checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ courseLevel: level, coursePrice: price, courseName: name }),
-    });
-    const { url } = await res.json();
-    if (url) window.location.href = url;
+    const supabase = createClient();
+    const { data } = await supabase.auth.getUser();
+
+    if (!data.user) {
+      sessionStorage.setItem(
+        "pendingEnroll",
+        JSON.stringify({ courseLevel: level, coursePrice: price, courseName: name })
+      );
+      window.location.href = "/login";
+      return;
+    }
+
+    await startCheckout(level, price, name);
   }
 
   return (
