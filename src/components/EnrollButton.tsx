@@ -6,25 +6,7 @@ const HSK_PRICES: Record<string, number> = {
   HSK1: 460, HSK2: 460, HSK3: 800, HSK4: 800, HSK5: 1800, HSK6: 2000,
 };
 
-export async function startCheckout(courseLevel: string, coursePrice: number, courseName: string) {
-  const res = await fetch("/api/create-checkout", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ courseLevel, coursePrice, courseName }),
-  });
-  const { url } = await res.json();
-  if (url) window.location.href = url;
-}
-
-export default function EnrollButton({
-  level,
-  name,
-  label,
-}: {
-  level: string;
-  name: string;
-  label: string;
-}) {
+export default function EnrollButton({ level, name, label }: { level: string; name: string; label: string }) {
   const levelKey = level.replace(/\s/g, "");
   const price = HSK_PRICES[levelKey];
 
@@ -33,15 +15,23 @@ export default function EnrollButton({
     const { data } = await supabase.auth.getUser();
 
     if (!data.user) {
-      sessionStorage.setItem(
-        "pendingEnroll",
-        JSON.stringify({ courseLevel: level, coursePrice: price, courseName: name })
-      );
-      window.location.href = "/login";
+      const params = new URLSearchParams({
+        enroll: "1",
+        level,
+        price: String(price),
+        name,
+      });
+      window.location.href = `/login?${params.toString()}`;
       return;
     }
 
-    await startCheckout(level, price, name);
+    const res = await fetch("/api/create-checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ courseLevel: level, coursePrice: price, courseName: name }),
+    });
+    const { url } = await res.json();
+    if (url) window.location.href = url;
   }
 
   return (

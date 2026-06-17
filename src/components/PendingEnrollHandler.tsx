@@ -4,18 +4,20 @@ import { createClient } from "@/lib/supabase/client";
 
 export default function PendingEnrollHandler() {
   useEffect(() => {
-    const raw = sessionStorage.getItem("pendingEnroll");
-    if (!raw) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("enroll") !== "1") return;
+
+    const level = params.get("level") ?? "";
+    const price = Number(params.get("price") ?? "0");
+    const name = params.get("name") ?? "";
 
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => {
       if (!data.user) return;
-      sessionStorage.removeItem("pendingEnroll");
-      const { courseLevel, coursePrice, courseName } = JSON.parse(raw);
       fetch("/api/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ courseLevel, coursePrice, courseName }),
+        body: JSON.stringify({ courseLevel: level, coursePrice: price, courseName: name }),
       })
         .then(r => r.json())
         .then(({ url }) => { if (url) window.location.href = url; });

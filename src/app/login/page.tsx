@@ -7,7 +7,7 @@ import GoogleSignInButton from "@/components/GoogleSignInButton";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: { error?: string; message?: string; redirect?: string };
+  searchParams: { error?: string; message?: string; redirect?: string; enroll?: string; level?: string; price?: string; name?: string };
 }) {
   const locale = getLocale();
   const tr = t(locale).login;
@@ -38,6 +38,10 @@ export default async function LoginPage({
             </p>
           )}
           <form action={signInAction} className="space-y-4">
+            {searchParams.enroll && <input type="hidden" name="enroll" value={searchParams.enroll} />}
+            {searchParams.level && <input type="hidden" name="level" value={searchParams.level} />}
+            {searchParams.price && <input type="hidden" name="price" value={searchParams.price} />}
+            {searchParams.name && <input type="hidden" name="name" value={searchParams.name} />}
             <div>
               <label className="label" htmlFor="email">{tr.email}</label>
               <input className="input" id="email" name="email" type="email" required />
