@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import { createAdminClient } from "@/lib/supabase/server";
+import { sendWelcomeEmail } from "@/lib/email";
 
 // Stripe sends events here. Configure this URL (https://yourdomain.com/api/stripe/webhook)
 // in the Stripe Dashboard -> Developers -> Webhooks, and set STRIPE_WEBHOOK_SECRET.
@@ -21,6 +22,23 @@ export async function POST(request: Request) {
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
+
+      // Send welcome email for all completed checkouts
+      const email = session.customer_email ?? (session.customer_details?.email ?? null);
+      if (email) {
+        let courseName = "Your Course";
+        let courseLevel = "";
+        try {
+          const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 1 });
+          const productName = lineItems.data[0]?.description ?? lineItems.data[0]?.price?.product as string ?? "";
+          // product name format: "Yang Yao Palace - <name> (<level>)"
+          const match = productName.match(/Yang Yao Palace - (.+?) \((.+?)\)/);
+          if (match) { courseName = match[1]; courseLevel = match[2]; }
+          else if (productName) { courseName = productName; }
+        } catch {}
+        await sendWelcomeEmail(email, courseName, courseLevel);
+      }
+
       const enrollmentId = session.metadata?.enrollment_id;
       if (enrollmentId) {
         await supabase
