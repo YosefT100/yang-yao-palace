@@ -11,6 +11,7 @@ export default async function TeacherLayout({ children }: { children: React.Reac
     { href: "/teacher", label: tr.teacherNav.myGroups },
     { href: "/teacher/schedule", label: tr.teacherNav.schedule },
     { href: "/teacher/availability", label: tr.teacherNav.availability },
+    { href: "/teacher/profile", label: "My Profile" },
   ];
 
   const supabase = createClient();
