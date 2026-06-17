@@ -2,6 +2,7 @@ import Link from "next/link";
 import { signInAction } from "@/app/actions";
 import { getLocale } from "@/lib/i18n-server";
 import { t } from "@/lib/i18n";
+import GoogleSignInButton from "@/components/GoogleSignInButton";
 
 export default async function LoginPage({
   searchParams,
@@ -20,6 +21,12 @@ export default async function LoginPage({
         </div>
         <div className="card">
           <h2 className="mb-4 text-lg font-semibold">{tr.title}</h2>
+          <GoogleSignInButton />
+          <div className="my-4 flex items-center gap-3">
+            <div className="h-px flex-1 bg-gray-200" />
+            <span className="text-xs text-gray-400">OR</span>
+            <div className="h-px flex-1 bg-gray-200" />
+          </div>
           {searchParams.message && (
             <p className="mb-4 rounded-md bg-green-50 p-3 text-sm text-green-700">
               {searchParams.message}
