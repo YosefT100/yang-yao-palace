@@ -6,6 +6,7 @@ import {
 } from "@/app/teacher/actions";
 import { formatDateTime } from "@/lib/utils";
 import { HSKCurriculum } from "@/components/HSKCurriculum";
+import StartVideoLesson from "@/components/StartVideoLesson";
 
 export default async function TeacherLessonPage({ params }: { params: { lessonId: string } }) {
   const supabase = createClient();
@@ -62,6 +63,12 @@ export default async function TeacherLessonPage({ params }: { params: { lessonId
             </span>
           )}
         </p>
+      </div>
+
+      {/* Video lesson */}
+      <div className="card">
+        <h2 className="mb-3 text-lg font-semibold">Video Lesson</h2>
+        <StartVideoLesson lessonId={params.lessonId} />
       </div>
 
       {/* Material selection */}
