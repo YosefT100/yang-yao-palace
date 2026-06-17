@@ -214,8 +214,13 @@ export default async function HomePage({
           <span className="text-palace-gold/40">🏮</span>
           <div className="h-px w-24 bg-palace-gold/20" />
         </div>
-        <p className="text-xs text-white/25">
-          © {new Date().getFullYear()} Yang Yao Palace · Chinese Language Academy
+        <div className="flex items-center justify-center gap-4 text-xs text-white/35">
+          <Link href="/terms" className="hover:text-white/60 hover:underline">Terms of Service</Link>
+          <span className="text-white/20">·</span>
+          <Link href="/terms#privacy" className="hover:text-white/60 hover:underline">Privacy Policy</Link>
+        </div>
+        <p className="mt-3 text-xs text-white/25">
+          © 2026 Yang Yao Palace. All rights reserved.
         </p>
       </footer>
     </main>
