@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Set-Location \"C:\\\\Users\\\\asus\\\\AppData\\\\Local\\\\Packages\\\\Claude_pzs8sxrjxfjjc\\\\LocalCache\\\\Roaming\\\\Claude\\\\local-agent-mode-sessions\\\\355b3f48-cd13-4bc4-95b6-0f47d4e36374\\\\87845f04-2351-4854-88a5-ac7ecd33b7bd\\\\local_5918b419-6aec-4f6b-927a-db9b952ffecc\\\\outputs\\\\yang-yao-palace\"; Start-Process -FilePath \"npm\" -ArgumentList \"run\",\"dev\" -PassThru -RedirectStandardOutput \"$env:TEMP\\\\yang-yao-dev.log\" -RedirectStandardError \"$env:TEMP\\\\yang-yao-dev-err.log\")",
+      "Bash(timeout 15 npm run dev)",
+      "Bash(npm run *)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)"
+    ]
+  }
+}
