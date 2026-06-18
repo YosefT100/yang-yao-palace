@@ -7,7 +7,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
   const locale = getLocale();
   const tr = t(locale);
 
-  const STUDENT_NAV = [{ href: "/student", label: tr.studentNav.myCourses }];
+  const STUDENT_NAV = [{ href: "/student", label: tr.studentNav.myCourses }, { href: "/", label: "← Home" }];
 
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
