@@ -28,7 +28,7 @@ export default async function HomePage({
 
   return (
     <main>
-      <div className="text-right text-xs text-gray-400" style={{ padding: "4px 8px", direction: "rtl" }}>בס״ד</div>
+      <div style={{ position: "fixed", top: 4, right: 8, fontSize: 10, color: "#999", zIndex: 100, transform: "rotate(-12deg)" }}>בס״ד</div>
       <PendingEnrollHandler />
       {/* ── Hero ──────────────────────────────────────────────────── */}
       <section
@@ -126,8 +126,8 @@ export default async function HomePage({
                 ...(course.has_bonus_lesson ? [tf.bonusLesson] : []),
                 ...(hskNum >= 3 ? [tf.hskExam] : []),
                 ...(hskNum >= 5 ? [tf.advanced] : []),
-                "Exam preparation lesson",
-                "Final HSK exam simulation",
+                tr.examPrepLesson,
+                tr.finalExamSim,
               ];
               return (
                 <div key={course.id} className="card flex flex-col border-l-4 border-palace-gold">
@@ -135,13 +135,13 @@ export default async function HomePage({
                     <h3 className="text-lg font-bold text-palace-red">{course.level}</h3>
                     <span className="text-sm font-semibold text-palace-gold">
                       {coursePrice ?? formatPrice(course.price_amount, course.price_currency, locale)}{" "}
-                      / course
+                      {tr.perCourse}
                     </span>
                   </div>
                   <p className="mb-1 text-sm font-medium text-palace-dark/80">{course.name}</p>
                   {lessonCount && (
                     <p className="mb-3 text-xs text-palace-dark/50">
-                      {lessonCount} lessons + 2 exam sessions
+                      {lessonCount} {tr.examSessions}
                     </p>
                   )}
                   <div className="my-2 border-t border-gray-100" />
@@ -165,11 +165,9 @@ export default async function HomePage({
       <section className="bg-palace-cream py-20">
         <div className="mx-auto max-w-6xl px-6">
           <div className="mb-10 text-center">
-            <h2 className="font-serif text-3xl font-bold text-palace-dark">Try Before You Commit 🎯</h2>
+            <h2 className="font-serif text-3xl font-bold text-palace-dark">{tr.trialTitle}</h2>
             <div className="mx-auto mt-3 h-0.5 w-16 bg-palace-gold" />
-            <p className="mx-auto mt-4 max-w-xl text-palace-dark/60">
-              Book a free 30-minute trial lesson with one of our native Chinese teachers.
-            </p>
+            <p className="mx-auto mt-4 max-w-xl text-palace-dark/60">{tr.trialSubtitle}</p>
           </div>
           <TrialForm />
         </div>
@@ -179,29 +177,27 @@ export default async function HomePage({
       <section className="bg-white py-20">
         <div className="mx-auto max-w-6xl px-6">
           <div className="mb-12 text-center">
-            <h2 className="font-serif text-3xl font-bold text-palace-dark">1-on-1 Private Lessons</h2>
+            <h2 className="font-serif text-3xl font-bold text-palace-dark">{tr.oneOnOneTitle}</h2>
             <div className="mx-auto mt-3 h-0.5 w-16 bg-palace-gold" />
-            <p className="mx-auto mt-4 max-w-2xl text-palace-dark/60">
-              Personalized one-on-one sessions with a native Chinese teacher, at your own pace.
-            </p>
+            <p className="mx-auto mt-4 max-w-2xl text-palace-dark/60">{tr.oneOnOneSubtitle}</p>
           </div>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {[
-              { level: "Beginner", range: "HSK 1-2", fullPrice: "$765", installment: "$192", levelKey: "HSK1_1ON1", instKey: "HSK1_1ON1_INST", name: "Beginner 1-on-1 (HSK 1-2)" },
-              { level: "Intermediate", range: "HSK 3-4", fullPrice: "$1,320", installment: "$330", levelKey: "HSK3_1ON1", instKey: "HSK3_1ON1_INST", name: "Intermediate 1-on-1 (HSK 3-4)" },
-              { level: "Advanced", range: "HSK 5-6", fullPrice: "$3,360", installment: "$840", levelKey: "HSK6_1ON1", instKey: "HSK6_1ON1_INST", name: "Advanced 1-on-1 (HSK 5-6)" },
-            ].map(({ level, range, fullPrice, installment, levelKey, instKey, name }) => (
-              <div key={level} className="card flex flex-col border-l-4 border-palace-gold">
+              { labelKey: "beginner" as const, range: "HSK 1-2", fullPrice: "$765", installment: "$192", levelKey: "HSK1_1ON1", instKey: "HSK1_1ON1_INST", nameEn: "Beginner 1-on-1 (HSK 1-2)" },
+              { labelKey: "intermediate" as const, range: "HSK 3-4", fullPrice: "$1,320", installment: "$330", levelKey: "HSK3_1ON1", instKey: "HSK3_1ON1_INST", nameEn: "Intermediate 1-on-1 (HSK 3-4)" },
+              { labelKey: "advanced" as const, range: "HSK 5-6", fullPrice: "$3,360", installment: "$840", levelKey: "HSK6_1ON1", instKey: "HSK6_1ON1_INST", nameEn: "Advanced 1-on-1 (HSK 5-6)" },
+            ].map(({ labelKey, range, fullPrice, installment, levelKey, instKey, nameEn }) => (
+              <div key={levelKey} className="card flex flex-col border-l-4 border-palace-gold">
                 <div className="mb-1 flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-palace-red">{level}</h3>
+                  <h3 className="text-lg font-bold text-palace-red">{tr[labelKey]}</h3>
                   <span className="text-sm font-semibold text-palace-gold">{fullPrice}</span>
                 </div>
                 <p className="mb-1 text-sm font-medium text-palace-dark/80">{range}</p>
-                <p className="mb-1 text-xs text-palace-dark/50">or 4 installments of {installment}</p>
-                <p className="mb-3 text-xs italic text-palace-dark/40">Includes everything in group courses + more</p>
+                <p className="mb-1 text-xs text-palace-dark/50">{tr.orInstallments} {installment}</p>
+                <p className="mb-3 text-xs italic text-palace-dark/40">{tr.includesEverything}</p>
                 <div className="my-2 border-t border-gray-100" />
                 <ul className="mb-4 flex-1 space-y-1.5">
-                  {["Personalized pace", "Flexible schedule", "Native Chinese teacher", "WhatsApp / WeChat support", "🕐 Flexible scheduling at your convenience"].map((f) => (
+                  {[tf.personalizedPace, tf.flexibleSchedule1on1, tf.nativeTeacher, tf.whatsappSupport, tf.flexibleConvenience].map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm text-palace-dark/70">
                       <span className="mt-0.5 shrink-0 font-bold text-palace-gold">✓</span>
                       {f}
@@ -209,8 +205,8 @@ export default async function HomePage({
                   ))}
                 </ul>
                 <div className="flex flex-col gap-2">
-                  <EnrollButton level={levelKey} name={name} label="Pay in Full" />
-                  <EnrollButton level={instKey} name={name + " - Installment"} label={"Pay in 4 x " + installment} />
+                  <EnrollButton level={levelKey} name={nameEn} label={tr.payInFull} />
+                  <EnrollButton level={instKey} name={nameEn + " - Installment"} label={`${tr.payIn4} ${installment}`} />
                 </div>
               </div>
             ))}
@@ -235,12 +231,12 @@ export default async function HomePage({
           <div className="h-px w-24 bg-palace-gold/20" />
         </div>
         <div className="flex items-center justify-center gap-4 text-xs text-white/35">
-          <Link href="/terms" className="hover:text-white/60 hover:underline">Terms of Service</Link>
+          <Link href="/terms" className="hover:text-white/60 hover:underline">{tr.termsOfService}</Link>
           <span className="text-white/20">·</span>
-          <Link href="/terms#privacy" className="hover:text-white/60 hover:underline">Privacy Policy</Link>
+          <Link href="/terms#privacy" className="hover:text-white/60 hover:underline">{tr.privacyPolicy}</Link>
         </div>
         <p className="mt-3 text-xs text-white/25">
-          © 2026 Yang Yao Palace. All rights reserved.
+          {tr.copyright}
         </p>
       </footer>
     </main>
