@@ -28,7 +28,7 @@ export default async function HomePage({
 
   return (
     <main>
-      <div style={{ position: "fixed", top: 4, right: 8, fontSize: 10, color: "#999", zIndex: 100, transform: "rotate(-12deg)" }}>בס״ד</div>
+      <div style={{ position: "fixed", top: 4, right: 8, fontSize: 10, color: "#999", zIndex: 100, transform: "rotate(-12deg)" }}>{tr.bsd}</div>
       <PendingEnrollHandler />
       {/* ── Hero ──────────────────────────────────────────────────── */}
       <section
