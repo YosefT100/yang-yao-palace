@@ -28,6 +28,7 @@ export default async function HomePage({
 
   return (
     <main>
+      <div className="text-right text-xs text-gray-400" style={{ padding: "4px 8px", direction: "rtl" }}>בס״ד</div>
       <PendingEnrollHandler />
       {/* ── Hero ──────────────────────────────────────────────────── */}
       <section
