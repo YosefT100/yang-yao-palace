@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import type { UserRole } from "@/types/database";
+import { notifyLessonsCreated } from "@/lib/lesson-notifications";
 
 // ---------------------------------------------------------------------------
 // Courses (HSK levels)
@@ -149,10 +150,21 @@ export async function generateLessonsAction(formData: FormData) {
     }
   }
 
-  await supabase.from("lessons").insert(lessonsToInsert);
+  const { data: inserted } = await supabase
+    .from("lessons")
+    .insert(lessonsToInsert)
+    .select("id");
+
   revalidatePath(`/admin/groups/${groupId}`);
   revalidatePath("/admin/schedule");
   revalidatePath("/teacher/schedule");
+
+  if (inserted && inserted.length > 0) {
+    void notifyLessonsCreated(
+      inserted.map((r: { id: string }) => r.id),
+      supabase
+    );
+  }
 }
 
 function nextDateForDay(from: Date, dayOfWeek: number, weekOffset: number) {

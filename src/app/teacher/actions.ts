@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { notifyLessonEvent } from "@/lib/lesson-notifications";
 
 // ---------------------------------------------------------------------------
 // Availability — a teacher's fixed weekly recurring time slots per group.
@@ -64,17 +65,38 @@ export async function selectLessonMaterialAction(formData: FormData) {
 export async function updateLessonNotesAction(formData: FormData) {
   const supabase = createClient();
   const lessonId = String(formData.get("lesson_id"));
+  const newStatus = String(formData.get("status") || "scheduled");
+
+  // Fetch current status to detect changes
+  const { data: current } = await supabase
+    .from("lessons")
+    .select("status")
+    .eq("id", lessonId)
+    .single();
 
   await supabase
     .from("lessons")
     .update({
       notes: String(formData.get("notes") || ""),
-      status: String(formData.get("status") || "scheduled"),
+      status: newStatus,
     })
     .eq("id", lessonId);
 
   revalidatePath(`/teacher/lessons/${lessonId}`);
   revalidatePath("/teacher/schedule");
+
+  // Notify only when status actually changes
+  if (current && current.status !== newStatus) {
+    const eventMap: Record<string, "rescheduled" | "cancelled" | "completed"> = {
+      scheduled: "rescheduled",
+      cancelled: "cancelled",
+      completed: "completed",
+    };
+    const event = eventMap[newStatus];
+    if (event) {
+      void notifyLessonEvent(event, lessonId, supabase);
+    }
+  }
 }
 
 export async function updateMeetingLinkAction(formData: FormData) {
@@ -90,6 +112,7 @@ export async function updateMeetingLinkAction(formData: FormData) {
 // ---------------------------------------------------------------------------
 // Teacher's own materials library
 // ---------------------------------------------------------------------------
+
 export async function createTeacherMaterialAction(formData: FormData) {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
