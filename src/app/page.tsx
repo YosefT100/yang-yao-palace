@@ -216,14 +216,8 @@ export default async function HomePage({
 
       {/* ── Footer ────────────────────────────────────────────────── */}
       <footer className="border-t border-palace-gold/20 bg-palace-dark py-10 text-center">
-        <p
-          className="font-serif text-2xl text-palace-gold"
-          style={{ textShadow: "0 1px 12px rgba(212,175,55,0.3)" }}
-        >
-          学而不思则罔
-        </p>
         <p className="mt-2 text-sm text-white/45">
-          ללמוד בלי להרהר — זה בזבוז · 孔子 Confucius
+          {tr.confuciusQuote}
         </p>
         <div className="my-5 flex items-center justify-center gap-3">
           <div className="h-px w-24 bg-palace-gold/20" />
