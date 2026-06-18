@@ -30,7 +30,7 @@ export default function EnrollButton({ level, name, label }: { level: string; na
   }
 
   return (
-    <button onClick={handleClick} className="btn-primary w-full justify-center text-center">
+    <button onClick={handleClick} className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors w-full">
       {label}
     </button>
   );
