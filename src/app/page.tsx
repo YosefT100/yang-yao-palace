@@ -110,12 +110,7 @@ export default async function HomePage({
               const levelKey = (course.level as string)?.replace(/\s/g, "") as string;
               const lessonCount = HSK_LESSONS[levelKey];
               const coursePrice = HSK_PRICES[levelKey];
-              const liveLine =
-                locale === "zh"
-                  ? `${course.sessions_per_week} 节课/周 · ${course.lesson_duration_minutes} 分钟`
-                  : locale === "he"
-                  ? `${course.sessions_per_week} שיעורים/שבוע · ${course.lesson_duration_minutes} דקות`
-                  : `${course.sessions_per_week} live lessons/week · ${course.lesson_duration_minutes} min`;
+              const liveLine = `${course.sessions_per_week} ${tr.lessonsPerWeek} · ${course.lesson_duration_minutes} ${tr.minutesPerLesson}`;
               const feats = [
                 liveLine,
                 tf.practice,
@@ -207,6 +202,31 @@ export default async function HomePage({
                 <div className="flex flex-col gap-2">
                   <EnrollButton level={levelKey} name={nameEn} label={tr.payInFull} />
                   <EnrollButton level={instKey} name={nameEn + " - Installment"} label={`${tr.payIn4} ${installment}`} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Testimonials ─────────────────────────────────────────── */}
+      <section className="bg-palace-cream py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-12 text-center">
+            <h2 className="font-serif text-3xl font-bold text-palace-dark">{tr.testimonialsTitle}</h2>
+            <div className="mx-auto mt-3 h-0.5 w-16 bg-palace-gold" />
+            <p className="mx-auto mt-4 max-w-2xl text-palace-dark/60">{tr.testimonialsSubtitle}</p>
+          </div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {tr.testimonials.map((item, i) => (
+              <div key={i} className="card flex flex-col gap-3 border-t-4 border-palace-gold">
+                <p className="text-sm leading-relaxed text-palace-dark/75 italic flex-1">
+                  &ldquo;{item.text}&rdquo;
+                </p>
+                <div className="border-t border-gray-100 pt-3">
+                  <p className="font-semibold text-palace-dark text-sm">{item.name}</p>
+                  <p className="text-xs text-palace-gold mt-0.5">{item.level}</p>
+                  <p className="text-xs text-palace-dark/45 mt-0.5">{item.country}</p>
                 </div>
               </div>
             ))}

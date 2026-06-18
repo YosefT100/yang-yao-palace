@@ -61,6 +61,34 @@ const translations = {
       trialSending: "Sending…",
       trialError: "Something went wrong. Please try again.",
       trialSuccess: "We'll contact you within 24 hours to schedule your trial!",
+      testimonialsTitle: "What Our Students Say",
+      testimonialsSubtitle: "Real students, real results — from around the world.",
+      testimonials: [
+        {
+          name: "Maya Cohen",
+          level: "HSK 3 Student",
+          country: "🇮🇱 Israel",
+          text: "I started with zero Chinese and passed HSK 2 in 8 months. The teachers are patient, the lessons are structured, and the WhatsApp groups make it easy to stay on track.",
+        },
+        {
+          name: "James Liu",
+          level: "HSK 5 Student",
+          country: "🇺🇸 USA",
+          text: "The 1-on-1 sessions pushed my Chinese to a completely new level. My teacher adapted every lesson to my goals — business Chinese was exactly what I needed.",
+        },
+        {
+          name: "Noa Levi",
+          level: "HSK 1 Student",
+          country: "🇮🇱 Israel",
+          text: "I was nervous to start learning Chinese at 40, but the group is small and supportive. After just 3 months I can already hold basic conversations.",
+        },
+        {
+          name: "Sara Mizrahi",
+          level: "HSK 4 Student",
+          country: "🇮🇱 Israel",
+          text: "The bonus lessons and exam simulations really set Yang Yao Palace apart. I felt fully prepared for the official HSK exam and passed on my first attempt.",
+        },
+      ],
     },
     login: {
       title: "Sign in",
@@ -167,6 +195,34 @@ const translations = {
       trialSending: "发送中…",
       trialError: "出现错误，请重试。",
       trialSuccess: "我们将在24小时内联系您安排试听课！",
+      testimonialsTitle: "学员好评",
+      testimonialsSubtitle: "来自全球的真实学员，真实成果。",
+      testimonials: [
+        {
+          name: "Maya Cohen",
+          level: "HSK 3 学员",
+          country: "🇮🇱 以色列",
+          text: "我从零基础开始，8个月内通过了HSK 2。老师耐心细致，课程结构清晰，WhatsApp群组让我随时保持学习状态。",
+        },
+        {
+          name: "James Liu",
+          level: "HSK 5 学员",
+          country: "🇺🇸 美国",
+          text: "一对一课程将我的中文提升到了全新水平。老师根据我的目标量身定制每节课——商务汉语正是我所需要的。",
+        },
+        {
+          name: "Noa Levi",
+          level: "HSK 1 学员",
+          country: "🇮🇱 以色列",
+          text: "40岁开始学中文让我有些担心，但班级小而温馨。仅仅3个月，我已经能进行基本对话了。",
+        },
+        {
+          name: "Sara Mizrahi",
+          level: "HSK 4 学员",
+          country: "🇮🇱 以色列",
+          text: "加餐课和模拟考试让杨姚宫殿与众不同。我为正式HSK考试做足了准备，一次性通过。",
+        },
+      ],
     },
     login: {
       title: "登录",
@@ -273,6 +329,34 @@ const translations = {
       trialSending: "שולח…",
       trialError: "משהו השתבש. אנא נסה שוב.",
       trialSuccess: "ניצור איתך קשר תוך 24 שעות לתיאום השיעור!",
+      testimonialsTitle: "מה אומרים התלמידים שלנו",
+      testimonialsSubtitle: "תלמידים אמיתיים, תוצאות אמיתיות — מכל העולם.",
+      testimonials: [
+        {
+          name: "מאיה כהן",
+          level: "תלמידת HSK 3",
+          country: "🇮🇱 ישראל",
+          text: "התחלתי ללא שום ידע בסינית ועברתי HSK 2 תוך 8 חודשים. המורים סבלניים, השיעורים מובנים, וקבוצות הוואטסאפ עוזרות להישאר בקצב.",
+        },
+        {
+          name: "James Liu",
+          level: "תלמיד HSK 5",
+          country: "🇺🇸 ארה״ב",
+          text: "השיעורים הפרטיים הקפיצו את הסינית שלי לרמה חדשה לגמרי. המורה התאים כל שיעור למטרות שלי — סינית עסקית היה בדיוק מה שהייתי צריך.",
+        },
+        {
+          name: "נועה לוי",
+          level: "תלמידת HSK 1",
+          country: "🇮🇱 ישראל",
+          text: "פחדתי להתחיל ללמוד סינית בגיל 40, אבל הקבוצה קטנה ותומכת. אחרי 3 חודשים בלבד כבר מסוגלת לנהל שיחות בסיסיות.",
+        },
+        {
+          name: "שרה מזרחי",
+          level: "תלמידת HSK 4",
+          country: "🇮🇱 ישראל",
+          text: "שיעורי הבונוס וסימולציות הבחינה הם מה שמייחד את יאנג יאו פאלאס. הגעתי לבחינת HSK הרשמית מוכנה לגמרי ועברתי בניסיון הראשון.",
+        },
+      ],
     },
     login: {
       title: "כניסה",
