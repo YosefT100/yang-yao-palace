@@ -22,8 +22,7 @@ export default async function AdminPaymentsPage() {
       <div>
         <h1 className="mb-1 font-serif text-2xl font-bold text-palace-dark">{tr.payments}</h1>
         <p className="text-sm text-palace-dark/60">
-          Stripe checkout creates an enrollment + payment record once configured (see README for
-          setting up <code>STRIPE_SECRET_KEY</code> and the webhook).
+          Stripe checkout creates an enrollment and payment record automatically after each successful payment.
         </p>
       </div>
 
