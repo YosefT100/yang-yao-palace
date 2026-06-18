@@ -200,7 +200,7 @@ export default async function HomePage({
                 <p className="mb-3 text-xs italic text-palace-dark/40">Includes everything in group courses + more</p>
                 <div className="my-2 border-t border-gray-100" />
                 <ul className="mb-4 flex-1 space-y-1.5">
-                  {["Personalized pace", "Flexible schedule", "Native Chinese teacher", "WhatsApp / WeChat support"].map((f) => (
+                  {["Personalized pace", "Flexible schedule", "Native Chinese teacher", "WhatsApp / WeChat support", "🕐 Flexible scheduling at your convenience"].map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm text-palace-dark/70">
                       <span className="mt-0.5 shrink-0 font-bold text-palace-gold">✓</span>
                       {f}
