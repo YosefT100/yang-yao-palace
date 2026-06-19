@@ -52,7 +52,7 @@ async function fetchLessonDetails(
   if (!raw) return null;
 
   // Supabase returns FK joins as single objects at runtime; cast via unknown
-  const lesson = raw as unknown as Record<string, unknown>;
+  const lesson = raw as unknown as LessonDetails;
 
   const groupId: string | undefined = lesson.group?.id;
   let students: { full_name: string; email: string }[] = [];
@@ -65,7 +65,7 @@ async function fetchLessonDetails(
       .eq("status", "active");
 
     if (members) {
-      students = (members as { student: { full_name: string; email: string } | null }[])
+      students = (members as unknown as { student: { full_name: string; email: string } | null }[])
         .map((m) => m.student)
         .filter(Boolean) as { full_name: string; email: string }[];
     }

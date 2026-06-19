@@ -3,6 +3,25 @@ import { formatPrice, formatDateTime } from "@/lib/utils";
 import { getLocale } from "@/lib/i18n-server";
 import { t } from "@/lib/i18n";
 
+interface Enrollment {
+  id: string;
+  student?: { full_name?: string; email?: string };
+  group?: { name?: string; course?: { level?: string } };
+  price_amount?: number;
+  price_currency?: string;
+  status?: string;
+  created_at?: string;
+}
+
+interface Payment {
+  id: string;
+  enrollment?: Enrollment;
+  amount?: number;
+  currency?: string;
+  status?: string;
+  created_at?: string;
+}
+
 export default async function AdminPaymentsPage() {
   const tr = t(getLocale()).pages;
   const supabase = createClient();
@@ -36,19 +55,18 @@ export default async function AdminPaymentsPage() {
             </tr>
           </thead>
           <tbody>
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            {(enrollments as any[] | null)?.map((e) => (
+            {(enrollments as Enrollment[] | null)?.map((e) => (
               <tr key={e.id} className="border-b border-black/5">
                 <td className="py-2 font-medium">{e.student?.full_name || e.student?.email}</td>
                 <td className="py-2">{e.group?.course?.level} · {e.group?.name}</td>
-                <td className="py-2">{formatPrice(e.price_amount, e.price_currency)}</td>
+                <td className="py-2">{formatPrice(e.price_amount ?? 0, e.price_currency ?? "usd")}</td>
                 <td className="py-2">
                   <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
                     e.status === "active" ? "bg-green-100 text-green-700" :
                     e.status === "pending" ? "bg-yellow-100 text-yellow-700" : "bg-black/5 text-palace-dark/50"
                   }`}>{e.status}</span>
                 </td>
-                <td className="py-2 text-palace-dark/50">{formatDateTime(e.created_at)}</td>
+                <td className="py-2 text-palace-dark/50">{formatDateTime(e.created_at ?? "")}</td>
               </tr>
             ))}
             {!enrollments?.length && (
@@ -71,14 +89,13 @@ export default async function AdminPaymentsPage() {
             </tr>
           </thead>
           <tbody>
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            {(payments as any[] | null)?.map((p) => (
+            {(payments as Payment[] | null)?.map((p) => (
               <tr key={p.id} className="border-b border-black/5">
                 <td className="py-2 font-medium">{p.enrollment?.student?.full_name || p.enrollment?.student?.email}</td>
                 <td className="py-2">{p.enrollment?.group?.course?.level} · {p.enrollment?.group?.name}</td>
-                <td className="py-2">{formatPrice(p.amount, p.currency)}</td>
+                <td className="py-2">{formatPrice(p.amount ?? 0, p.currency ?? "usd")}</td>
                 <td className="py-2 capitalize">{p.status}</td>
-                <td className="py-2 text-palace-dark/50">{formatDateTime(p.created_at)}</td>
+                <td className="py-2 text-palace-dark/50">{formatDateTime(p.created_at ?? "")}</td>
               </tr>
             ))}
             {!payments?.length && (
