@@ -19,11 +19,6 @@ export default async function AdminGroupsPage() {
   return (
     <div>
       <h1 className="mb-1 font-serif text-2xl font-bold text-palace-dark">{tr.groups}</h1>
-      <p className="mb-6 text-sm text-palace-dark/60">
-        A group is a teacher's class for a specific HSK level. Create a group, assign a
-        teacher, then open it to set the teacher's weekly time slots, add students, and
-        generate the lesson schedule.
-      </p>
 
       <form action={createGroupAction} className="card mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <select className="input" name="course_id" required>

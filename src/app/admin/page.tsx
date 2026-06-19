@@ -74,7 +74,6 @@ export default async function AdminOverviewPage() {
         </Link>
         <Link href="/admin/schedule" className="card text-center hover:shadow-md">
           <p className="font-semibold text-palace-red">View schedule</p>
-          <p className="mt-1 text-sm text-palace-dark/50">All upcoming lessons</p>
         </Link>
       </div>
     </div>

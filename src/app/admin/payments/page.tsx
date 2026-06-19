@@ -21,9 +21,6 @@ export default async function AdminPaymentsPage() {
     <div className="space-y-8">
       <div>
         <h1 className="mb-1 font-serif text-2xl font-bold text-palace-dark">{tr.payments}</h1>
-        <p className="text-sm text-palace-dark/60">
-          Stripe checkout creates an enrollment and payment record automatically after each successful payment.
-        </p>
       </div>
 
       <div className="card">

@@ -16,7 +16,6 @@ export default async function AdminSchedulePage() {
   return (
     <div>
       <h1 className="mb-1 font-serif text-2xl font-bold text-palace-dark">{tr.schedule}</h1>
-      <p className="mb-6 text-sm text-palace-dark/60">All upcoming lessons across every group.</p>
 
       <div className="card">
         <table className="w-full text-sm">

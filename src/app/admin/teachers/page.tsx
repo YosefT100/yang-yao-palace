@@ -37,10 +37,6 @@ export default async function AdminTeachersPage() {
   return (
     <div>
       <h1 className="mb-1 font-serif text-2xl font-bold text-palace-dark">{tr.teachers}</h1>
-      <p className="mb-6 text-sm text-palace-dark/60">
-        Promote a registered user to "Teacher" below to give them access to the teacher
-        dashboard (group schedule, availability, lesson materials).
-      </p>
 
       <div className="card mb-8">
         <h2 className="mb-3 text-lg font-semibold">Current teachers</h2>

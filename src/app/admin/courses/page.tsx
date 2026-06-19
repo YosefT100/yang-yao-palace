@@ -17,11 +17,6 @@ export default async function AdminCoursesPage() {
   return (
     <div>
       <h1 className="mb-1 font-serif text-2xl font-bold text-palace-dark">{tr.courses}</h1>
-      <p className="mb-6 text-sm text-palace-dark/60">
-        Define the weekly cadence and price for each level. Standard rules: HSK1 & HSK2
-        run twice a week plus a bonus lesson, HSK3 runs twice a week, HSK4+ runs once a week —
-        but every value below is editable.
-      </p>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {(courses as Course[] | null)?.map((course) => (
