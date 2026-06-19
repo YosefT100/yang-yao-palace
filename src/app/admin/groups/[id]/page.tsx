@@ -3,11 +3,11 @@ import {
   updateGroupAction,
   addGroupMemberAction,
   removeGroupMemberAction,
-  generateLessonsAction,
 } from "@/app/admin/actions";
 import { addAvailabilityAction, deleteAvailabilityAction } from "@/app/teacher/actions";
 import { dayName, formatTime, formatDateTime, courseSlotPlan } from "@/lib/utils";
 import type { Profile } from "@/types/database";
+import { GenerateScheduleForm } from "@/components/GenerateScheduleForm";
 
 export default async function AdminGroupDetailPage({ params }: { params: { id: string } }) {
   const supabase = createClient();
@@ -128,15 +128,7 @@ export default async function AdminGroupDetailPage({ params }: { params: { id: s
       <div className="card">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Lessons</h2>
-          <form action={generateLessonsAction} className="flex items-center gap-2">
-            <input type="hidden" name="group_id" value={groupId} />
-            <select name="weeks" className="input w-auto py-1.5">
-              <option value="4">4 weeks</option>
-              <option value="8">8 weeks</option>
-              <option value="12">12 weeks</option>
-            </select>
-            <button type="submit" className="btn-primary py-1.5">Generate schedule</button>
-          </form>
+          <GenerateScheduleForm groupId={groupId} slotsPerWeek={availability?.length ?? 0} />
         </div>
         <ul className="divide-y divide-black/5 text-sm">
           {lessons?.map((l: any) => (
