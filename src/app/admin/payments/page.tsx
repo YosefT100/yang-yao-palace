@@ -36,7 +36,8 @@ export default async function AdminPaymentsPage() {
             </tr>
           </thead>
           <tbody>
-            {(enrollments as Record<string, unknown>[] | null)?.map((e) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {(enrollments as any[] | null)?.map((e) => (
               <tr key={e.id} className="border-b border-black/5">
                 <td className="py-2 font-medium">{e.student?.full_name || e.student?.email}</td>
                 <td className="py-2">{e.group?.course?.level} · {e.group?.name}</td>
@@ -70,7 +71,8 @@ export default async function AdminPaymentsPage() {
             </tr>
           </thead>
           <tbody>
-            {(payments as Record<string, unknown>[] | null)?.map((p) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {(payments as any[] | null)?.map((p) => (
               <tr key={p.id} className="border-b border-black/5">
                 <td className="py-2 font-medium">{p.enrollment?.student?.full_name || p.enrollment?.student?.email}</td>
                 <td className="py-2">{p.enrollment?.group?.course?.level} · {p.enrollment?.group?.name}</td>
