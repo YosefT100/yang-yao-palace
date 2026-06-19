@@ -13,34 +13,59 @@ body {
   font-family: 'Inter', system-ui, sans-serif;
   background-color: #fbf6ec;
   color: #1a0a00;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ── Buttons ──────────────────────────────────────────────────── */
 .btn-primary {
   @apply inline-flex items-center justify-center bg-palace-red text-white
-    px-5 py-2.5 rounded-lg font-semibold
-    hover:bg-red-900 active:scale-95 transition-all duration-150;
+    px-6 py-2.5 rounded-lg font-semibold text-sm tracking-wide cursor-pointer
+    hover:bg-[#7a1820] active:scale-[0.98] transition-all duration-150 shadow-sm;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center border-2 border-palace-gold
-    text-palace-gold px-5 py-2.5 rounded-lg font-semibold
+  @apply inline-flex items-center justify-center border border-palace-gold
+    text-palace-gold px-6 py-2.5 rounded-lg font-semibold text-sm tracking-wide cursor-pointer
     hover:bg-palace-gold hover:text-white transition-all duration-150;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center text-palace-dark/60 px-4 py-2
+    rounded-lg text-sm font-medium cursor-pointer hover:bg-black/5 hover:text-palace-dark transition-all duration-150;
 }
 
 /* ── Cards ────────────────────────────────────────────────────── */
 .card {
-  @apply bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-200;
+  @apply bg-white rounded-2xl shadow-sm border border-black/[0.06] p-6
+    hover:shadow-md transition-shadow duration-200;
 }
 
 /* ── Form ─────────────────────────────────────────────────────── */
 .input {
-  @apply w-full border border-gray-200 rounded-lg px-4 py-2.5
-    focus:ring-2 focus:ring-palace-gold outline-none transition;
+  @apply w-full border border-gray-200 rounded-xl px-4 py-3 text-sm
+    focus:ring-2 focus:ring-palace-gold/30 focus:border-palace-gold outline-none transition;
 }
 
 .label {
-  @apply text-sm font-medium text-palace-dark mb-1 block;
+  @apply text-sm font-medium text-palace-dark/80 mb-1.5 block;
+}
+
+/* ── Typography helpers ───────────────────────────────────────── */
+.page-title {
+  @apply font-serif text-2xl font-bold text-palace-dark;
+}
+
+.section-title {
+  @apply font-serif text-3xl font-bold text-palace-dark;
+}
+
+.gold-divider {
+  @apply mx-auto mt-3 h-0.5 w-20 bg-palace-gold rounded-full;
+}
+
+/* ── Badge ────────────────────────────────────────────────────── */
+.badge {
+  @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
 }
 
 /* ── Section backgrounds ──────────────────────────────────────── */
@@ -48,4 +73,10 @@ body {
   background-color: #fbf6ec;
   background-image: url("data:image/svg+xml,%3Csvg width='60' height='30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 15 Q15 0 30 15 Q45 30 60 15' fill='none' stroke='%23d4af37' stroke-width='0.8' stroke-opacity='0.13'/%3E%3C/svg%3E");
   background-size: 60px 30px;
+}
+
+/* ── Stat card ────────────────────────────────────────────────── */
+.stat-card {
+  @apply bg-white rounded-2xl border border-black/[0.06] p-6 shadow-sm
+    hover:shadow-md transition-shadow duration-200;
 }

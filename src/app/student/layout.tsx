@@ -26,7 +26,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
         signOutLabel={tr.sidebar.signOut}
         locale={locale}
       />
-      <main className="min-h-screen flex-1 bg-palace-cream px-6 pb-6 pt-16 md:pt-6">{children}</main>
+      <main className="min-h-screen flex-1 bg-palace-cream px-6 pb-10 pt-16 md:px-8 md:pt-8">{children}</main>
     </div>
   );
 }

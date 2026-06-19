@@ -28,52 +28,72 @@ export default async function AdminOverviewPage() {
   const currency = enrollments?.[0]?.price_currency || "ILS";
 
   const stats = [
-    { label: "Teachers", value: teacherCount ?? 0, href: "/admin/teachers" },
-    { label: "Students", value: studentCount ?? 0, href: "/admin/students" },
-    { label: "Active groups", value: groupCount ?? 0, href: "/admin/groups" },
-    { label: "Monthly revenue (active)", value: formatPrice(revenue, currency), href: "/admin/payments" },
+    { label: "Teachers", value: teacherCount ?? 0, href: "/admin/teachers", accent: "#9a1f2b" },
+    { label: "Students", value: studentCount ?? 0, href: "/admin/students", accent: "#9a1f2b" },
+    { label: "Active groups", value: groupCount ?? 0, href: "/admin/groups", accent: "#9a1f2b" },
+    { label: "Revenue (active)", value: formatPrice(revenue, currency), href: "/admin/payments", accent: "#D4AF37" },
   ];
 
   return (
-    <div>
-      <h1 className="mb-6 font-serif text-2xl font-bold text-palace-dark">{tr.overview}</h1>
+    <div className="space-y-8">
+      <div>
+        <h1 className="page-title">{tr.overview}</h1>
+      </div>
 
+      {/* Stat cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s) => (
-          <Link key={s.label} href={s.href} className="card hover:shadow-md">
-            <p className="text-sm text-palace-dark/50">{s.label}</p>
-            <p className="mt-1 text-2xl font-bold text-palace-red">{s.value}</p>
+          <Link
+            key={s.label}
+            href={s.href}
+            className="stat-card cursor-pointer group"
+            style={{ borderTop: `3px solid ${s.accent}` }}
+          >
+            <p className="text-xs font-semibold tracking-wide text-palace-dark/45 uppercase">{s.label}</p>
+            <p className="mt-2 text-3xl font-bold text-palace-dark group-hover:text-palace-red transition-colors duration-150">
+              {s.value}
+            </p>
           </Link>
         ))}
       </div>
 
-      <div className="mt-8 card">
-        <h2 className="mb-3 text-lg font-semibold">Upcoming lessons</h2>
-        {!upcoming?.length && <p className="text-sm text-palace-dark/50">No upcoming lessons scheduled.</p>}
-        <ul className="divide-y divide-black/5">
+      {/* Upcoming lessons */}
+      <div className="card">
+        <h2 className="mb-4 text-base font-semibold text-palace-dark">Upcoming lessons</h2>
+        {!upcoming?.length && (
+          <p className="text-sm text-palace-dark/45 py-4 text-center">No upcoming lessons scheduled.</p>
+        )}
+        <ul className="divide-y divide-black/[0.05]">
           {upcoming?.map((l: any) => (
-            <li key={l.id} className="flex items-center justify-between py-2 text-sm">
+            <li key={l.id} className="flex items-center justify-between py-3 text-sm">
               <div>
-                <p className="font-medium">{l.group?.course?.level} · {l.group?.name}</p>
-                <p className="text-palace-dark/50">{l.title}</p>
+                <p className="font-semibold text-palace-dark">
+                  {l.group?.course?.level}
+                  <span className="font-normal text-palace-dark/50"> · {l.group?.name}</span>
+                </p>
+                <p className="mt-0.5 text-xs text-palace-dark/40">{l.title}</p>
               </div>
-              <span className="text-palace-dark/60">{formatDateTime(l.scheduled_at)}</span>
+              <span className="ml-4 shrink-0 rounded-full bg-palace-cream px-3 py-1 text-xs font-medium text-palace-dark/60">
+                {formatDateTime(l.scheduled_at)}
+              </span>
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <Link href="/admin/courses" className="card text-center hover:shadow-md">
-          <p className="font-semibold text-palace-red">Manage HSK courses</p>
-          <p className="mt-1 text-sm text-palace-dark/50">Set pricing & weekly cadence</p>
+      {/* Quick actions */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <Link href="/admin/courses" className="card cursor-pointer group text-center" style={{ borderTop: "2px solid rgba(212,175,55,0.3)" }}>
+          <p className="font-semibold text-palace-red group-hover:text-[#7a1820] transition-colors duration-150">Manage HSK courses</p>
+          <p className="mt-1.5 text-sm text-palace-dark/45">Set pricing &amp; weekly cadence</p>
         </Link>
-        <Link href="/admin/groups" className="card text-center hover:shadow-md">
-          <p className="font-semibold text-palace-red">Manage groups</p>
-          <p className="mt-1 text-sm text-palace-dark/50">Assign teachers & students</p>
+        <Link href="/admin/groups" className="card cursor-pointer group text-center" style={{ borderTop: "2px solid rgba(212,175,55,0.3)" }}>
+          <p className="font-semibold text-palace-red group-hover:text-[#7a1820] transition-colors duration-150">Manage groups</p>
+          <p className="mt-1.5 text-sm text-palace-dark/45">Assign teachers &amp; students</p>
         </Link>
-        <Link href="/admin/schedule" className="card text-center hover:shadow-md">
-          <p className="font-semibold text-palace-red">View schedule</p>
+        <Link href="/admin/schedule" className="card cursor-pointer group text-center" style={{ borderTop: "2px solid rgba(212,175,55,0.3)" }}>
+          <p className="font-semibold text-palace-red group-hover:text-[#7a1820] transition-colors duration-150">View schedule</p>
+          <p className="mt-1.5 text-sm text-palace-dark/45">All upcoming lessons</p>
         </Link>
       </div>
     </div>
