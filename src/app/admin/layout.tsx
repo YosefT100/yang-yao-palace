@@ -15,6 +15,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: "/admin/students", label: tr.adminNav.students },
     { href: "/admin/schedule", label: tr.adminNav.schedule },
     { href: "/admin/payments", label: tr.adminNav.payments },
+    { href: "/", label: "← Home" },
   ];
 
   const supabase = createClient();
