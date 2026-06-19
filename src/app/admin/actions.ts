@@ -128,6 +128,23 @@ export async function generateLessonsAction(formData: FormData) {
   }
 
   const now = new Date();
+
+  // Fetch existing lessons for this group in the generation window to prevent duplicates
+  const windowEnd = new Date(now);
+  windowEnd.setDate(windowEnd.getDate() + weeks * 7 + 7);
+  const { data: existingLessons } = await supabase
+    .from("lessons")
+    .select("scheduled_at")
+    .eq("group_id", groupId)
+    .gte("scheduled_at", now.toISOString())
+    .lte("scheduled_at", windowEnd.toISOString());
+
+  const existingTimes = new Set(
+    (existingLessons ?? []).map((l: { scheduled_at: string }) =>
+      new Date(l.scheduled_at).toISOString()
+    )
+  );
+
   const lessonsToInsert: Record<string, unknown>[] = [];
 
   for (let w = 0; w < weeks; w++) {
@@ -135,6 +152,8 @@ export async function generateLessonsAction(formData: FormData) {
       const date = nextDateForDay(now, slot.day_of_week, w);
       const [h, m] = slot.start_time.split(":").map(Number);
       date.setHours(h, m, 0, 0);
+
+      if (existingTimes.has(date.toISOString())) continue;
 
       lessonsToInsert.push({
         group_id: groupId,
@@ -150,6 +169,14 @@ export async function generateLessonsAction(formData: FormData) {
     }
   }
 
+  if (lessonsToInsert.length === 0) {
+    console.log("[generateLessons] No new lessons to insert — all slots already exist for group", groupId);
+    revalidatePath(`/admin/groups/${groupId}`);
+    revalidatePath("/admin/schedule");
+    revalidatePath("/teacher/schedule");
+    return;
+  }
+
   const { data: inserted } = await supabase
     .from("lessons")
     .insert(lessonsToInsert)
@@ -160,6 +187,7 @@ export async function generateLessonsAction(formData: FormData) {
   revalidatePath("/teacher/schedule");
 
   if (inserted && inserted.length > 0) {
+    console.log("[generateLessons] Inserted", inserted.length, "lessons, calling notifyLessonsCreated for group", groupId);
     void notifyLessonsCreated(
       inserted.map((r: { id: string }) => r.id),
       supabase
