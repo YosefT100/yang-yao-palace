@@ -36,7 +36,6 @@ async function fetchLessonDetails(
   lessonId: string,
   supabase: SupabaseClient
 ): Promise<LessonDetails | null> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: raw } = await supabase
     .from("lessons")
     .select(
@@ -53,14 +52,12 @@ async function fetchLessonDetails(
   if (!raw) return null;
 
   // Supabase returns FK joins as single objects at runtime; cast via unknown
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const lesson = raw as unknown as any;
+  const lesson = raw as unknown as Record<string, unknown>;
 
   const groupId: string | undefined = lesson.group?.id;
   let students: { full_name: string; email: string }[] = [];
 
   if (groupId) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: members } = await supabase
       .from("group_members")
       .select("student:profiles!group_members_student_id_fkey(full_name, email)")
@@ -68,10 +65,8 @@ async function fetchLessonDetails(
       .eq("status", "active");
 
     if (members) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      students = (members as any[])
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .map((m: any) => m.student)
+      students = (members as { student: { full_name: string; email: string } | null }[])
+        .map((m) => m.student)
         .filter(Boolean) as { full_name: string; email: string }[];
     }
   }
