@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import { createAdminClient } from "@/lib/supabase/server";
 import { sendWelcomeEmail } from "@/lib/email";
+import { trackPayment } from "@/lib/tracking";
 
 // Stripe sends events here. Configure this URL (https://yourdomain.com/api/stripe/webhook)
 // in the Stripe Dashboard -> Developers -> Webhooks, and set STRIPE_WEBHOOK_SECRET.
@@ -65,6 +66,19 @@ export async function POST(request: Request) {
             amount: enrollment.price_amount,
             currency: enrollment.price_currency,
             status: "paid",
+          });
+
+          const [{ data: studentProfile }, { data: group }] = await Promise.all([
+            supabase.from("profiles").select("full_name, email").eq("id", enrollment.student_id).single(),
+            supabase.from("groups").select("name, course:courses(level)").eq("id", enrollment.group_id).single(),
+          ]);
+          void trackPayment({
+            student_name: studentProfile?.full_name ?? "",
+            student_email: studentProfile?.email ?? session.customer_email ?? "",
+            amount: enrollment.price_amount / 100,
+            hsk_level: (group?.course as unknown as { level?: string })?.level ?? "",
+            group_name: group?.name ?? "",
+            paid_at: new Date().toISOString(),
           });
         }
       }

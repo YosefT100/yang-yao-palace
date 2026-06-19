@@ -8,6 +8,7 @@ import {
 import { formatDateTime } from "@/lib/utils";
 import { HSKCurriculum } from "@/components/HSKCurriculum";
 import RecordingsLibrary from "@/components/RecordingsLibrary";
+import { AttendanceForm } from "@/components/AttendanceForm";
 
 export default async function TeacherLessonPage({ params }: { params: { lessonId: string } }) {
   const supabase = createClient();
@@ -197,6 +198,21 @@ export default async function TeacherLessonPage({ params }: { params: { lessonId
             </table>
           </div>
         )}
+      </div>
+
+      {/* Attendance */}
+      <div className="card">
+        <h2 className="mb-4 text-lg font-semibold">Attendance</h2>
+        <AttendanceForm
+          lessonId={lesson.id}
+          currentStatus={lesson.status}
+          students={(members as any[] ?? [])
+            .map((m) => ({
+              id: m.student?.id ?? m.id,
+              full_name: m.student?.full_name ?? "",
+              email: m.student?.email ?? "",
+            }))}
+        />
       </div>
 
       {/* Notes & status */}

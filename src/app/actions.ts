@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { trackStudent } from "@/lib/tracking";
 
 export async function signInAction(formData: FormData) {
   const email = String(formData.get("email"));
@@ -27,24 +28,6 @@ export async function signInAction(formData: FormData) {
   redirect(dest);
 }
 
-async function notifyMake(user: { email: string; name?: string }) {
-  try {
-    await fetch("https://hook.us2.make.com/2z7rkjx310rvqkhfkt42pvvft4y76jmi", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: user.email,
-        name: user.name ?? "",
-        registered_at: new Date().toISOString(),
-        level: "",
-        status: "new"
-      })
-    });
-  } catch (e) {
-    console.error("Make webhook error:", e);
-  }
-}
-
 export async function signUpAction(formData: FormData) {
   const email = String(formData.get("email"));
   const password = String(formData.get("password"));
@@ -60,7 +43,7 @@ export async function signUpAction(formData: FormData) {
     redirect(`/signup?error=${encodeURIComponent(error.message)}`);
   }
 
-  await notifyMake({ email, name: fullName });
+  void trackStudent({ name: fullName, email, registered_at: new Date().toISOString() });
 
   redirect("/login?message=Check your email to confirm your account, then sign in.");
 }

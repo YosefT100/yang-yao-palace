@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { notifyLessonEvent } from "@/lib/lesson-notifications";
+import { trackAttendance } from "@/lib/tracking";
 
 // ---------------------------------------------------------------------------
 // Availability — a teacher's fixed weekly recurring time slots per group.
@@ -112,6 +113,55 @@ export async function updateMeetingLinkAction(formData: FormData) {
 // ---------------------------------------------------------------------------
 // Teacher's own materials library
 // ---------------------------------------------------------------------------
+
+export async function markAttendanceAction(formData: FormData) {
+  const supabase = createClient();
+  const lessonId = String(formData.get("lesson_id"));
+  const status = String(formData.get("status")) as "completed" | "cancelled";
+  const cancelReason = String(formData.get("cancel_reason") || "");
+  const studentsPresent = String(formData.get("students_present") || "");
+  const absentStudents = String(formData.get("absent_students") || "");
+  const absentReason = String(formData.get("absent_reason") || "");
+
+  const { data: lesson } = await supabase
+    .from("lessons")
+    .select("*, group:groups(name, course:courses(level), teacher:profiles!groups_teacher_id_fkey(full_name))")
+    .eq("id", lessonId)
+    .single();
+
+  await supabase
+    .from("lessons")
+    .update({
+      status,
+      ...(status === "cancelled" && cancelReason ? { notes: cancelReason } : {}),
+    })
+    .eq("id", lessonId);
+
+  revalidatePath(`/teacher/lessons/${lessonId}`);
+  revalidatePath("/teacher/schedule");
+  revalidatePath("/admin/schedule");
+
+  if (lesson) {
+    const g = lesson.group as unknown as {
+      name: string;
+      course: { level: string };
+      teacher: { full_name: string } | null;
+    };
+    const scheduledAt = new Date(lesson.scheduled_at);
+    void trackAttendance({
+      date: scheduledAt.toLocaleDateString("en-US"),
+      hsk_level: g.course?.level ?? "",
+      group_name: g.name ?? "",
+      teacher_name: g.teacher?.full_name ?? "",
+      students_present: studentsPresent,
+      absent_students: absentStudents,
+      absent_reason: absentReason || (status === "cancelled" ? cancelReason : ""),
+      duration_minutes: lesson.duration_minutes,
+      completed: status === "completed",
+    });
+    void notifyLessonEvent(status === "completed" ? "completed" : "cancelled", lessonId, supabase);
+  }
+}
 
 export async function createTeacherMaterialAction(formData: FormData) {
   const supabase = createClient();

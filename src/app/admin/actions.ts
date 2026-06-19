@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import type { UserRole } from "@/types/database";
 import { notifyLessonsCreated } from "@/lib/lesson-notifications";
+import { trackTeacher, trackLesson } from "@/lib/tracking";
 
 // ---------------------------------------------------------------------------
 // Courses (HSK levels)
@@ -37,6 +38,21 @@ export async function setUserRoleAction(formData: FormData) {
   const supabase = createClient();
   const id = String(formData.get("id"));
   const role = String(formData.get("role")) as UserRole;
+
+  if (role === "teacher") {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("full_name, email")
+      .eq("id", id)
+      .single();
+    if (profile) {
+      void trackTeacher({
+        name: profile.full_name ?? "",
+        email: profile.email ?? "",
+        promoted_at: new Date().toISOString(),
+      });
+    }
+  }
 
   await supabase.from("profiles").update({ role }).eq("id", id);
 
@@ -112,7 +128,7 @@ export async function generateLessonsAction(formData: FormData) {
 
   const { data: group } = await supabase
     .from("groups")
-    .select("*, course:courses(*)")
+    .select("*, course:courses(*), teacher:profiles(full_name)")
     .eq("id", groupId)
     .single();
   if (!group) return;
@@ -192,6 +208,20 @@ export async function generateLessonsAction(formData: FormData) {
       inserted.map((r: { id: string }) => r.id),
       supabase
     );
+
+    const teacherName = (group as unknown as { teacher?: { full_name?: string } }).teacher?.full_name ?? "";
+    for (const lesson of lessonsToInsert) {
+      const scheduledAt = new Date(lesson.scheduled_at as string);
+      void trackLesson({
+        date: scheduledAt.toLocaleDateString("en-US"),
+        time: scheduledAt.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
+        hsk_level: group.course.level as string,
+        group_name: group.name as string,
+        teacher_name: teacherName,
+        lesson_type: lesson.lesson_type as string,
+        status: "scheduled",
+      });
+    }
   }
 }
 
