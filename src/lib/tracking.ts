@@ -39,6 +39,7 @@ export function trackLesson(data: {
   teacher_name: string;
   lesson_type: string;
   status: string;
+  cancelled_reason?: string;
 }) {
   const levelNum = data.hsk_level.replace(/\D/g, "").charAt(0);
   const sheet = `HSK${levelNum} Lessons`;
@@ -55,6 +56,7 @@ export function trackAttendance(data: {
   absent_reason: string;
   duration_minutes: number;
   completed: boolean;
+  cancelled_reason?: string;
 }) {
   return sendToSheet("Attendance", data);
 }

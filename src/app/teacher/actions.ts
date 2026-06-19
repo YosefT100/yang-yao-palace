@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { notifyLessonEvent } from "@/lib/lesson-notifications";
-import { trackAttendance } from "@/lib/tracking";
+import { trackAttendance, trackLesson } from "@/lib/tracking";
 
 // ---------------------------------------------------------------------------
 // Availability — a teacher's fixed weekly recurring time slots per group.
@@ -158,6 +158,17 @@ export async function markAttendanceAction(formData: FormData) {
       absent_reason: absentReason || (status === "cancelled" ? cancelReason : ""),
       duration_minutes: lesson.duration_minutes,
       completed: status === "completed",
+      ...(status === "cancelled" && cancelReason ? { cancelled_reason: cancelReason } : {}),
+    });
+    void trackLesson({
+      date: scheduledAt.toLocaleDateString("en-US"),
+      time: scheduledAt.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
+      hsk_level: g.course?.level ?? "",
+      group_name: g.name ?? "",
+      teacher_name: g.teacher?.full_name ?? "",
+      lesson_type: lesson.lesson_type ?? "regular",
+      status,
+      ...(status === "cancelled" && cancelReason ? { cancelled_reason: cancelReason } : {}),
     });
     void notifyLessonEvent(status === "completed" ? "completed" : "cancelled", lessonId, supabase);
   }

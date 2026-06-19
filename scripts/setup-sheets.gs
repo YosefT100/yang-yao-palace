@@ -6,13 +6,13 @@ function setupAllSheets() {
     "Teachers": ["Name", "Email", "Phone / WeChat", "WhatsApp", "Telegram", "Promoted At", "HSK Levels", "Active Groups"],
     "Teacher Payments": ["Teacher Name", "Email", "Phone / WeChat", "HSK Level", "Group Name", "Lessons Taught", "Amount Owed", "Pay Date", "Status"],
     "Payments": ["Student Name", "Student Email", "Amount ($)", "HSK Level", "Group Name", "Paid At", "Status"],
-    "Attendance": ["Date", "HSK Level", "Group Name", "Teacher Name", "Students Present", "Absent Students", "Absent Reason", "Duration (min)", "Completed"],
-    "HSK1 Lessons": ["Date", "Time", "Group Name", "Teacher Name", "Lesson Type", "Status", "Notes"],
-    "HSK2 Lessons": ["Date", "Time", "Group Name", "Teacher Name", "Lesson Type", "Status", "Notes"],
-    "HSK3 Lessons": ["Date", "Time", "Group Name", "Teacher Name", "Lesson Type", "Status", "Notes"],
-    "HSK4 Lessons": ["Date", "Time", "Group Name", "Teacher Name", "Lesson Type", "Status", "Notes"],
-    "HSK5 Lessons": ["Date", "Time", "Group Name", "Teacher Name", "Lesson Type", "Status", "Notes"],
-    "HSK6 Lessons": ["Date", "Time", "Group Name", "Teacher Name", "Lesson Type", "Status", "Notes"]
+    "Attendance": ["Date", "HSK Level", "Group Name", "Teacher Name", "Students Present", "Absent Students", "Absent Reason", "Duration (min)", "Completed", "Cancelled Reason"],
+    "HSK1 Lessons": ["Date", "Time", "Group Name", "Teacher Name", "Lesson Type", "Status", "Cancelled Reason", "Notes"],
+    "HSK2 Lessons": ["Date", "Time", "Group Name", "Teacher Name", "Lesson Type", "Status", "Cancelled Reason", "Notes"],
+    "HSK3 Lessons": ["Date", "Time", "Group Name", "Teacher Name", "Lesson Type", "Status", "Cancelled Reason", "Notes"],
+    "HSK4 Lessons": ["Date", "Time", "Group Name", "Teacher Name", "Lesson Type", "Status", "Cancelled Reason", "Notes"],
+    "HSK5 Lessons": ["Date", "Time", "Group Name", "Teacher Name", "Lesson Type", "Status", "Cancelled Reason", "Notes"],
+    "HSK6 Lessons": ["Date", "Time", "Group Name", "Teacher Name", "Lesson Type", "Status", "Cancelled Reason", "Notes"]
   };
 
   var allSheets = ss.getSheets();
@@ -33,11 +33,11 @@ function setupAllSheets() {
     sheet.clear();
     var range = sheet.getRange(1, 1, 1, headers.length);
     range.setValues([headers]);
-    range.setBackground("#1A0A00").setFontColor("#D4AF37").setFontWeight("bold").setFontSize(10).setVerticalAlignment("middle").setHorizontalAlignment("center").setWrap(false);
+    range.setBackground("#E8F4FD").setFontColor("#1A1A2E").setFontWeight("bold").setFontSize(11).setVerticalAlignment("middle").setHorizontalAlignment("center").setWrap(false);
     sheet.setRowHeight(1, 35);
     sheet.setFrozenRows(1);
     for (var i = 1; i <= headers.length; i++) {
-      sheet.setColumnWidth(i, 160);
+      sheet.setColumnWidth(i, 170);
     }
   }
 }
