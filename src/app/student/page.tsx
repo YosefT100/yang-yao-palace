@@ -22,18 +22,6 @@ export default async function StudentHomePage() {
 
   const myGroupIds = (memberships ?? []).map((m: any) => m.group_id);
 
-  const { data: upcoming } = myGroupIds.length
-    ? await supabase
-        .from("lessons")
-        .select("*, group:groups(name, course:courses(level))")
-        .in("group_id", myGroupIds)
-        .gte("scheduled_at", new Date().toISOString())
-        .order("scheduled_at")
-        .limit(10)
-    : { data: [] };
-
-  const { data: courses } = await supabase.from("courses").select("*").eq("is_active", true).order("sort_order");
-
   const { data: enrollments } = myGroupIds.length
     ? await supabase
         .from("enrollments")
@@ -41,6 +29,22 @@ export default async function StudentHomePage() {
         .eq("student_id", auth.user!.id)
         .in("group_id", myGroupIds)
     : { data: [] };
+
+  const activeGroupIds = (enrollments ?? [])
+    .filter((e: any) => e.status === "active")
+    .map((e: any) => e.group_id);
+
+  const { data: upcoming } = activeGroupIds.length
+    ? await supabase
+        .from("lessons")
+        .select("*, group:groups(name, course:courses(level))")
+        .in("group_id", activeGroupIds)
+        .gte("scheduled_at", new Date().toISOString())
+        .order("scheduled_at")
+        .limit(10)
+    : { data: [] };
+
+  const { data: courses } = await supabase.from("courses").select("*").eq("is_active", true).order("sort_order");
 
   const enrollmentByGroup = new Map((enrollments ?? []).map((e: any) => [e.group_id, e]));
 
