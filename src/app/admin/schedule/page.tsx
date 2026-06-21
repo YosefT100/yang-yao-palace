@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { formatDateTime } from "@/lib/utils";
 import { getLocale } from "@/lib/i18n-server";
 import { t } from "@/lib/i18n";
+import { DeleteLessonButton } from "@/components/DeleteLessonButton";
 
 export default async function AdminSchedulePage() {
   const tr = t(getLocale()).pages;
@@ -27,6 +28,7 @@ export default async function AdminSchedulePage() {
               <th className="py-2">Type</th>
               <th className="py-2">Material</th>
               <th className="py-2">Status</th>
+              <th className="py-2"></th>
             </tr>
           </thead>
           <tbody>
@@ -42,10 +44,13 @@ export default async function AdminSchedulePage() {
                 </td>
                 <td className="py-2 text-palace-dark/60">{l.material?.title || "—"}</td>
                 <td className="py-2 capitalize text-palace-dark/60">{l.status}</td>
+                <td className="py-2">
+                  <DeleteLessonButton lessonId={l.id} />
+                </td>
               </tr>
             ))}
             {!lessons?.length && (
-              <tr><td colSpan={6} className="py-4 text-center text-palace-dark/50">No lessons scheduled yet. Generate a schedule from a group's page.</td></tr>
+              <tr><td colSpan={7} className="py-4 text-center text-palace-dark/50">No lessons scheduled yet. Generate a schedule from a group&apos;s page.</td></tr>
             )}
           </tbody>
         </table>

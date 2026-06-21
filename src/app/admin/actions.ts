@@ -233,6 +233,31 @@ function nextDateForDay(from: Date, dayOfWeek: number, weekOffset: number) {
 }
 
 // ---------------------------------------------------------------------------
+// Delete lesson
+// ---------------------------------------------------------------------------
+export async function deleteLessonAction(formData: FormData) {
+  const supabase = createClient();
+  await supabase.from("lessons").delete().eq("id", String(formData.get("lesson_id")));
+  revalidatePath("/admin/schedule");
+  revalidatePath("/teacher/schedule");
+}
+
+// ---------------------------------------------------------------------------
+// Delete group (cascade: lessons, members, availability)
+// ---------------------------------------------------------------------------
+export async function deleteGroupAction(formData: FormData) {
+  const supabase = createClient();
+  const groupId = String(formData.get("group_id"));
+  await supabase.from("lessons").delete().eq("group_id", groupId);
+  await supabase.from("group_members").delete().eq("group_id", groupId);
+  await supabase.from("availability").delete().eq("group_id", groupId);
+  await supabase.from("groups").delete().eq("id", groupId);
+  revalidatePath("/admin/groups");
+  revalidatePath("/admin/schedule");
+  revalidatePath("/teacher/schedule");
+}
+
+// ---------------------------------------------------------------------------
 // Materials (shared library, admin-managed)
 // ---------------------------------------------------------------------------
 export async function createMaterialAction(formData: FormData) {
