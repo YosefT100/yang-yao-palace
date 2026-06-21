@@ -258,6 +258,32 @@ export async function deleteGroupAction(formData: FormData) {
 }
 
 // ---------------------------------------------------------------------------
+// Bulk delete lessons
+// ---------------------------------------------------------------------------
+export async function deleteLessonsByIdsAction(ids: string[]) {
+  if (!ids.length) return;
+  const supabase = createClient();
+  await supabase.from("lessons").delete().in("id", ids);
+  revalidatePath("/admin/schedule");
+  revalidatePath("/teacher/schedule");
+}
+
+// ---------------------------------------------------------------------------
+// Bulk delete groups (cascade: lessons, members, availability)
+// ---------------------------------------------------------------------------
+export async function deleteGroupsByIdsAction(ids: string[]) {
+  if (!ids.length) return;
+  const supabase = createClient();
+  await supabase.from("lessons").delete().in("group_id", ids);
+  await supabase.from("group_members").delete().in("group_id", ids);
+  await supabase.from("availability").delete().in("group_id", ids);
+  await supabase.from("groups").delete().in("id", ids);
+  revalidatePath("/admin/groups");
+  revalidatePath("/admin/schedule");
+  revalidatePath("/teacher/schedule");
+}
+
+// ---------------------------------------------------------------------------
 // Materials (shared library, admin-managed)
 // ---------------------------------------------------------------------------
 export async function createMaterialAction(formData: FormData) {
