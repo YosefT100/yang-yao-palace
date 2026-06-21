@@ -1,5 +1,6 @@
 "use client";
 
+import { Trash2 } from "lucide-react";
 import { deleteLessonAction } from "@/app/admin/actions";
 
 export function DeleteLessonButton({ lessonId }: { lessonId: string }) {
@@ -13,9 +14,10 @@ export function DeleteLessonButton({ lessonId }: { lessonId: string }) {
   return (
     <button
       onClick={handleClick}
-      className="text-xs text-red-500 hover:text-red-700 hover:underline cursor-pointer"
+      aria-label="Delete"
+      className="cursor-pointer text-red-600 hover:text-red-700"
     >
-      Delete
+      <Trash2 size={16} />
     </button>
   );
 }
