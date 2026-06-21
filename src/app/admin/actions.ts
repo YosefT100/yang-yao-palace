@@ -128,7 +128,7 @@ export async function generateLessonsAction(formData: FormData) {
 
   const { data: group } = await supabase
     .from("groups")
-    .select("*, course:courses(*), teacher:profiles(full_name)")
+    .select("*, course:courses(*), teacher:profiles(full_name, email)")
     .eq("id", groupId)
     .single();
   if (!group) return;
@@ -203,7 +203,13 @@ export async function generateLessonsAction(formData: FormData) {
   revalidatePath("/teacher/schedule");
 
   if (inserted && inserted.length > 0) {
-    console.log("[generateLessons] Inserted", inserted.length, "lessons, calling notifyLessonsCreated for group", groupId);
+    const teacherForLog = (group as unknown as { teacher?: { full_name?: string; email?: string } }).teacher;
+    console.log(
+      "[generateLessons] Inserted", inserted.length, "lessons for group", groupId,
+      "| teacher_name:", teacherForLog?.full_name ?? "NONE",
+      "| teacher_email:", teacherForLog?.email ?? "NONE",
+      "| calling notifyLessonsCreated"
+    );
     void notifyLessonsCreated(
       inserted.map((r: { id: string }) => r.id),
       supabase

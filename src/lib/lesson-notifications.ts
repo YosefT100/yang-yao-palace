@@ -49,10 +49,18 @@ async function fetchLessonDetails(
     .eq("id", lessonId)
     .single();
 
-  if (!raw) return null;
+  if (!raw) {
+    console.warn("[lesson-email] fetchLessonDetails: no row returned for lesson", lessonId);
+    return null;
+  }
 
   // Supabase returns FK joins as single objects at runtime; cast via unknown
   const lesson = raw as unknown as LessonDetails;
+  console.log(
+    "[lesson-email] fetched lesson", lessonId,
+    "| teacher_name:", lesson.group?.teacher?.full_name ?? "NONE",
+    "| teacher_email:", lesson.group?.teacher?.email ?? "NONE"
+  );
 
   const groupId: string | undefined = lesson.group?.id;
   let students: { full_name: string; email: string }[] = [];
@@ -213,22 +221,33 @@ async function sendTeacherEmail(
     completed: `✅ Lesson Completed: ${level} — ${date}`,
   };
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-    },
-    body: JSON.stringify({
-      from: "Yang Yao Palace <onboarding@resend.dev>",
-      to: teacher.email,
-      subject: subjects[event],
-      html,
-    }),
-  });
+  const subject = subjects[event];
+  console.log("[lesson-email] Sending to:", teacher.email, "| subject:", subject);
+
+  let res: Response;
+  try {
+    res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from: "Yang Yao Palace <onboarding@resend.dev>",
+        to: teacher.email,
+        subject,
+        html,
+      }),
+    });
+  } catch (err) {
+    console.error("[lesson-email] fetch threw:", err);
+    return;
+  }
 
   if (!res.ok) {
-    console.error("[lesson-notifications] Resend error:", await res.text());
+    console.error("[lesson-email] Resend error:", res.status, await res.text());
+  } else {
+    console.log("[lesson-email] Resend accepted — status:", res.status);
   }
 }
 
@@ -404,21 +423,32 @@ async function sendBulkTeacherEmail(lessons: LessonDetails[]): Promise<void> {
 </body>
 </html>`;
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-    },
-    body: JSON.stringify({
-      from: "Yang Yao Palace <onboarding@resend.dev>",
-      to: teacher.email,
-      subject: `📅 ${lessons.length} New Lessons Scheduled — ${level} (${groupName})`,
-      html,
-    }),
-  });
+  const subject = `📅 ${lessons.length} New Lessons Scheduled — ${level} (${groupName})`;
+  console.log("[lesson-email] Sending bulk to:", teacher.email, "| subject:", subject);
+
+  let res: Response;
+  try {
+    res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from: "Yang Yao Palace <onboarding@resend.dev>",
+        to: teacher.email,
+        subject,
+        html,
+      }),
+    });
+  } catch (err) {
+    console.error("[lesson-email] bulk fetch threw:", err);
+    return;
+  }
 
   if (!res.ok) {
-    console.error("[lesson-notifications] Resend bulk error:", await res.text());
+    console.error("[lesson-email] Resend bulk error:", res.status, await res.text());
+  } else {
+    console.log("[lesson-email] Resend bulk accepted — status:", res.status);
   }
 }
