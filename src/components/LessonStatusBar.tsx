@@ -16,12 +16,14 @@ export function LessonStatusBar({
   const [pending, startTransition] = useTransition();
   const [showCancel, setShowCancel] = useState(false);
   const [reason, setReason] = useState("");
+  const [localStatus, setLocalStatus] = useState(currentStatus);
 
   function update(status: string, cancelReason?: string) {
     console.log("[LessonStatusBar] calling updateLessonStatusAction — lessonId:", lessonId, "status:", status, "reason:", cancelReason);
     startTransition(async () => {
       await updateLessonStatusAction(lessonId, status, cancelReason);
       console.log("[LessonStatusBar] updateLessonStatusAction completed — status:", status);
+      setLocalStatus(status);
       router.refresh();
     });
   }
@@ -30,12 +32,12 @@ export function LessonStatusBar({
     <div className="card flex flex-wrap items-start gap-3">
       <div className="flex items-center gap-2">
         <span className="text-sm font-medium text-palace-dark/60">Status:</span>
-        <LessonStatusBadge status={currentStatus} />
+        <LessonStatusBadge status={localStatus} />
       </div>
 
       <div className="flex flex-wrap gap-2">
         <button
-          disabled={pending || currentStatus === "completed"}
+          disabled={pending || localStatus === "completed"}
           onClick={() => { setShowCancel(false); update("completed"); }}
           className="rounded-lg bg-green-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-40"
         >
@@ -44,7 +46,7 @@ export function LessonStatusBar({
 
         {!showCancel ? (
           <button
-            disabled={pending || currentStatus === "cancelled"}
+            disabled={pending || localStatus === "cancelled"}
             onClick={() => setShowCancel(true)}
             className="rounded-lg bg-red-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-40"
           >
@@ -79,7 +81,7 @@ export function LessonStatusBar({
           disabled={pending}
           onClick={() => {
             setShowCancel(false);
-            update(currentStatus === "incomplete" ? "scheduled" : "incomplete");
+            update(localStatus === "incomplete" ? "scheduled" : "incomplete");
           }}
           className="rounded-lg bg-yellow-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-yellow-600 disabled:cursor-not-allowed disabled:opacity-40"
         >
