@@ -74,11 +74,14 @@ export function LessonStatusBar({
         )}
 
         <button
-          disabled={pending || currentStatus === "incomplete"}
-          onClick={() => { setShowCancel(false); update("incomplete"); }}
+          disabled={pending}
+          onClick={() => {
+            setShowCancel(false);
+            update(currentStatus === "incomplete" ? "scheduled" : "incomplete");
+          }}
           className="rounded-lg bg-yellow-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-yellow-600 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          ⚠️ Mark Incomplete / Resume
+          🔄 Mark Incomplete / Resume
         </button>
       </div>
     </div>
