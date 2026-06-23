@@ -178,7 +178,6 @@ async function sendTeacherEmail(
 
         <!-- Body -->
         <tr><td style="padding:36px 40px;">
-          <p style="background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:8px 12px;font-size:13px;margin:0 0 20px;"><strong>For teacher:</strong> ${teacher.email} | ${teacher.full_name}</p>
           <p style="color:#3a1a00;font-size:15px;margin:0 0 24px;">Dear ${teacher.full_name},</p>
 
           <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #f0e8d0;border-radius:8px;overflow:hidden;">
@@ -234,8 +233,8 @@ async function sendTeacherEmail(
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Yang Yao Palace <onboarding@resend.dev>",
-        to: "yaseft32@gmail.com",
+        from: "Yang Yao Palace <no-reply@yangyaopalace.com>",
+        to: teacher.email,
         subject,
         html,
       }),
@@ -396,7 +395,6 @@ async function sendBulkTeacherEmail(lessons: LessonDetails[]): Promise<void> {
           <p style="margin:0;color:#fff;font-size:18px;font-weight:bold;">📅 ${lessons.length} New Lessons Scheduled</p>
         </td></tr>
         <tr><td style="padding:36px 40px;">
-          <p style="background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:8px 12px;font-size:13px;margin:0 0 16px;"><strong>For teacher:</strong> ${teacher.email} | ${teacher.full_name}</p>
           <p style="color:#3a1a00;font-size:15px;margin:0 0 8px;">Dear ${teacher.full_name},</p>
           <p style="color:#666;font-size:14px;margin:0 0 24px;">
             ${lessons.length} new lessons have been scheduled for <strong>${groupName} (${level})</strong>.
@@ -437,8 +435,8 @@ async function sendBulkTeacherEmail(lessons: LessonDetails[]): Promise<void> {
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Yang Yao Palace <onboarding@resend.dev>",
-        to: "yaseft32@gmail.com",
+        from: "Yang Yao Palace <no-reply@yangyaopalace.com>",
+        to: teacher.email,
         subject,
         html,
       }),

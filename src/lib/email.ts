@@ -88,7 +88,7 @@ export async function sendWelcomeEmail(to: string, courseName: string, courseLev
       Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: "Yang Yao Palace <onboarding@resend.dev>",
+      from: "Yang Yao Palace <no-reply@yangyaopalace.com>",
       to,
       subject: "🎉 Welcome to Yang Yao Palace – Your Journey Begins!",
       html,
