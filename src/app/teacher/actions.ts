@@ -174,6 +174,59 @@ export async function markAttendanceAction(formData: FormData) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Lesson status management (action bar — complete / cancel / incomplete)
+// ---------------------------------------------------------------------------
+export async function updateLessonStatusAction(
+  lessonId: string,
+  status: string,
+  reason?: string
+) {
+  const supabase = createClient();
+
+  const { data: lesson } = await supabase
+    .from("lessons")
+    .select(
+      "*, group:groups(name, course:courses(level), teacher:profiles!groups_teacher_id_fkey(full_name, email))"
+    )
+    .eq("id", lessonId)
+    .single();
+
+  await supabase
+    .from("lessons")
+    .update({ status, ...(reason ? { notes: reason } : {}) })
+    .eq("id", lessonId);
+
+  revalidatePath(`/teacher/lessons/${lessonId}`);
+  revalidatePath("/teacher/schedule");
+  revalidatePath("/admin/schedule");
+
+  if (lesson) {
+    const g = lesson.group as unknown as {
+      name: string;
+      course: { level: string };
+      teacher: { full_name: string; email: string } | null;
+    };
+    const scheduledAt = new Date(lesson.scheduled_at);
+    void trackLesson({
+      date: scheduledAt.toLocaleDateString("en-US"),
+      time: scheduledAt.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
+      hsk_level: g.course?.level ?? "",
+      group_name: g.name ?? "",
+      teacher_name: g.teacher?.full_name ?? "",
+      lesson_type: lesson.lesson_type ?? "regular",
+      status,
+      ...(reason ? { cancelled_reason: reason } : {}),
+    });
+
+    const notifyEvent =
+      status === "completed" ? "completed" : status === "cancelled" ? "cancelled" : null;
+    if (notifyEvent) {
+      void notifyLessonEvent(notifyEvent, lessonId, supabase);
+    }
+  }
+}
+
 export async function createTeacherMaterialAction(formData: FormData) {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();

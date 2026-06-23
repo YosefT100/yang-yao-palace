@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteLessonsByIdsAction } from "@/app/admin/actions";
 import { DeleteLessonButton } from "./DeleteLessonButton";
+import { LessonStatusBadge } from "./LessonStatusBadge";
 import { formatDateTime } from "@/lib/utils";
 
 type Lesson = {
@@ -108,7 +109,7 @@ export function BulkDeleteLessons({ lessons }: { lessons: Lesson[] }) {
                   </span>
                 </td>
                 <td className="py-2 text-palace-dark/60">{l.material?.title || "—"}</td>
-                <td className="py-2 capitalize text-palace-dark/60">{l.status}</td>
+                <td className="py-2"><LessonStatusBadge status={l.status} /></td>
                 <td className="py-2">
                   <DeleteLessonButton lessonId={l.id} />
                 </td>

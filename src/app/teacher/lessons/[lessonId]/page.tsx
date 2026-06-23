@@ -9,6 +9,8 @@ import { formatDateTime } from "@/lib/utils";
 import { HSKCurriculum } from "@/components/HSKCurriculum";
 import RecordingsLibrary from "@/components/RecordingsLibrary";
 import { AttendanceForm } from "@/components/AttendanceForm";
+import { LessonStatusBadge } from "@/components/LessonStatusBadge";
+import { LessonStatusBar } from "@/components/LessonStatusBar";
 
 export default async function TeacherLessonPage({ params }: { params: { lessonId: string } }) {
   const supabase = createClient();
@@ -54,9 +56,12 @@ export default async function TeacherLessonPage({ params }: { params: { lessonId
         <p className="text-sm text-palace-dark/50">
           <a href="/teacher/schedule" className="hover:underline">← Schedule</a>
         </p>
-        <h1 className="font-serif text-2xl font-bold text-palace-dark">
-          {level} · {lesson.title}
-        </h1>
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="font-serif text-2xl font-bold text-palace-dark">
+            {level} · {lesson.title}
+          </h1>
+          <LessonStatusBadge status={lesson.status} />
+        </div>
         <p className="text-sm text-palace-dark/60">
           {formatDateTime(lesson.scheduled_at)} · {lesson.duration_minutes} min
           {lessonNumber > 0 && (
@@ -66,6 +71,9 @@ export default async function TeacherLessonPage({ params }: { params: { lessonId
           )}
         </p>
       </div>
+
+      {/* Status action bar */}
+      <LessonStatusBar lessonId={lesson.id} currentStatus={lesson.status} />
 
       {/* Meeting link */}
       <div className="card">
