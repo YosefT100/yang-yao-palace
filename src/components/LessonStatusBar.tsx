@@ -18,8 +18,10 @@ export function LessonStatusBar({
   const [reason, setReason] = useState("");
 
   function update(status: string, cancelReason?: string) {
+    console.log("[LessonStatusBar] calling updateLessonStatusAction — lessonId:", lessonId, "status:", status, "reason:", cancelReason);
     startTransition(async () => {
       await updateLessonStatusAction(lessonId, status, cancelReason);
+      console.log("[LessonStatusBar] updateLessonStatusAction completed — status:", status);
       router.refresh();
     });
   }
