@@ -15,6 +15,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing file or lessonId" }, { status: 400 });
   }
 
+  console.log("R2 config:", {
+    accountId: process.env.CLOUDFLARE_R2_ACCOUNT_ID ? "SET" : "MISSING",
+    accessKey: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID ? "SET" : "MISSING",
+    secretKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY ? "SET" : "MISSING",
+    bucket: process.env.CLOUDFLARE_R2_BUCKET ?? "MISSING",
+  });
+
   const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
   const key = `lesson-files/${lessonId}/${Date.now()}-${safeName}`;
   const buffer = Buffer.from(await file.arrayBuffer());
@@ -22,8 +29,8 @@ export async function POST(req: NextRequest) {
   try {
     const url = await uploadToR2(key, buffer, file.type || "application/octet-stream");
     return NextResponse.json({ url, fileName: file.name, fileSize: file.size });
-  } catch (err) {
-    console.error("[upload-lesson-file] R2 upload error:", err);
+  } catch (error) {
+    console.error("R2 upload error:", error);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }
