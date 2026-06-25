@@ -75,16 +75,27 @@ export function LessonAttachments({ lessonId }: { lessonId: string }) {
     setUploading(true);
     setError("");
     try {
-      const form = new FormData();
-      form.append("file", file);
-      form.append("lessonId", lessonId);
-      console.log("[LessonAttachments] uploading file:", file.name, "size:", file.size, "lessonId:", lessonId);
-      const res = await fetch("/api/upload-lesson-file", { method: "POST", body: form });
-      console.log("[LessonAttachments] upload response status:", res.status);
-      if (!res.ok) throw new Error(await res.text());
-      const { url, fileName, fileSize } = await res.json();
-      console.log("[LessonAttachments] upload success, url:", url);
-      await addLessonFileAction(lessonId, file.name, url, fileName, fileSize);
+      console.log("[LessonAttachments] requesting presign for:", file.name, "size:", file.size, "lessonId:", lessonId);
+      const presignRes = await fetch("/api/upload-lesson-file/presign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lessonId, fileName: file.name, fileType: file.type }),
+      });
+      console.log("[LessonAttachments] presign response status:", presignRes.status);
+      if (!presignRes.ok) throw new Error(await presignRes.text());
+      const { presignedUrl, publicUrl } = await presignRes.json();
+
+      console.log("[LessonAttachments] PUT to R2 presigned URL");
+      const uploadRes = await fetch(presignedUrl, {
+        method: "PUT",
+        body: file,
+        headers: { "Content-Type": file.type },
+      });
+      console.log("[LessonAttachments] R2 PUT status:", uploadRes.status);
+      if (!uploadRes.ok) throw new Error(`R2 PUT failed: ${uploadRes.status}`);
+
+      console.log("[LessonAttachments] upload success, publicUrl:", publicUrl);
+      await addLessonFileAction(lessonId, file.name, publicUrl, file.name, file.size);
       e.target.value = "";
       await load();
     } catch (err) {
