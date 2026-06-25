@@ -14,6 +14,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing lessonId, fileName or fileType" }, { status: 400 });
   }
 
+  console.log("R2 presign config:", {
+    accountId: process.env.CLOUDFLARE_R2_ACCOUNT_ID ? "SET" : "MISSING",
+    accessKey: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID ? "SET" : "MISSING",
+    secretKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY ? "SET" : "MISSING",
+    bucket: process.env.CLOUDFLARE_R2_BUCKET ?? "MISSING",
+  });
+
   const safeName = fileName.replace(/[^a-zA-Z0-9._-]/g, "_");
   const key = `lesson-files/${lessonId}/${Date.now()}-${safeName}`;
   const bucket = process.env.CLOUDFLARE_R2_BUCKET ?? "hsk-books";
