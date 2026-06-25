@@ -227,6 +227,65 @@ export async function updateLessonStatusAction(
   }
 }
 
+// ---------------------------------------------------------------------------
+// Lesson attachments
+// ---------------------------------------------------------------------------
+export async function addLessonLinkAction(lessonId: string, title: string, url: string) {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  await supabase.from("lesson_attachments").insert({
+    lesson_id: lessonId,
+    teacher_id: user.id,
+    title,
+    type: "link",
+    url,
+  });
+
+  revalidatePath(`/teacher/lessons/${lessonId}`);
+}
+
+export async function addLessonFileAction(
+  lessonId: string,
+  title: string,
+  url: string,
+  fileName: string,
+  fileSize: number
+) {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  await supabase.from("lesson_attachments").insert({
+    lesson_id: lessonId,
+    teacher_id: user.id,
+    title,
+    type: "file",
+    url,
+    file_name: fileName,
+    file_size: fileSize,
+  });
+
+  revalidatePath(`/teacher/lessons/${lessonId}`);
+}
+
+export async function deleteLessonAttachmentAction(attachmentId: string, lessonId: string) {
+  const supabase = createClient();
+  await supabase.from("lesson_attachments").delete().eq("id", attachmentId);
+  revalidatePath(`/teacher/lessons/${lessonId}`);
+}
+
+export async function getLessonAttachmentsAction(lessonId: string) {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from("lesson_attachments")
+    .select("*")
+    .eq("lesson_id", lessonId)
+    .order("created_at");
+  return data ?? [];
+}
+
 export async function createTeacherMaterialAction(formData: FormData) {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();

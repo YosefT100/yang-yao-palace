@@ -11,6 +11,7 @@ import RecordingsLibrary from "@/components/RecordingsLibrary";
 import { AttendanceForm } from "@/components/AttendanceForm";
 import { LessonStatusBadge } from "@/components/LessonStatusBadge";
 import { LessonStatusBar } from "@/components/LessonStatusBar";
+import { LessonAttachments } from "@/components/LessonAttachments";
 
 export default async function TeacherLessonPage({ params }: { params: { lessonId: string } }) {
   const supabase = createClient();
@@ -97,6 +98,9 @@ export default async function TeacherLessonPage({ params }: { params: { lessonId
           <button type="submit" className="btn-primary">Save</button>
         </form>
       </div>
+
+      {/* Attachments */}
+      <LessonAttachments lessonId={lesson.id} />
 
       {/* Recordings */}
       <div className="card">
