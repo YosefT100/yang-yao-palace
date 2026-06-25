@@ -78,9 +78,12 @@ export function LessonAttachments({ lessonId }: { lessonId: string }) {
       const form = new FormData();
       form.append("file", file);
       form.append("lessonId", lessonId);
+      console.log("[LessonAttachments] uploading file:", file.name, "size:", file.size, "lessonId:", lessonId);
       const res = await fetch("/api/upload-lesson-file", { method: "POST", body: form });
+      console.log("[LessonAttachments] upload response status:", res.status);
       if (!res.ok) throw new Error(await res.text());
       const { url, fileName, fileSize } = await res.json();
+      console.log("[LessonAttachments] upload success, url:", url);
       await addLessonFileAction(lessonId, file.name, url, fileName, fileSize);
       e.target.value = "";
       await load();
