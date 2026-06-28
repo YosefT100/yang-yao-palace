@@ -7,6 +7,7 @@ import { t } from "@/lib/i18n";
 import EnrollButton from "@/components/EnrollButton";
 import PendingEnrollHandler from "@/components/PendingEnrollHandler";
 import TrialForm from "@/components/TrialForm";
+import { FAQAccordion } from "@/components/FAQAccordion";
 
 export const dynamic = "force-dynamic";
 
@@ -95,7 +96,6 @@ export default async function HomePage({
           </div>
         </div>
 
-        {/* Subtle scroll indicator */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
           <div className="h-8 w-px bg-palace-gold/60" />
         </div>
@@ -173,8 +173,20 @@ export default async function HomePage({
         </div>
       </section>
 
+      {/* ── About Us ──────────────────────────────────────────────── */}
+      <section className="bg-white py-24" style={{ borderTop: "1px solid rgba(212,175,55,0.15)" }}>
+        <div className="mx-auto max-w-3xl px-6 text-center">
+          <p className="mb-3 text-xs font-semibold tracking-[0.3em] text-palace-gold uppercase">Our Story</p>
+          <h2 className="section-title">{tr.aboutTitle}</h2>
+          <div className="gold-divider" />
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-palace-dark/70">
+            {tr.aboutText}
+          </p>
+        </div>
+      </section>
+
       {/* ── Free Trial ────────────────────────────────────────────── */}
-      <section className="bg-white py-24" style={{ borderTop: "1px solid rgba(212,175,55,0.15)", borderBottom: "1px solid rgba(212,175,55,0.15)" }}>
+      <section className="bg-palace-cream py-24" style={{ borderTop: "1px solid rgba(212,175,55,0.15)" }}>
         <div className="mx-auto max-w-6xl px-6">
           <div className="mb-12 text-center">
             <p className="mb-3 text-xs font-semibold tracking-[0.3em] text-palace-gold uppercase">Free</p>
@@ -186,8 +198,51 @@ export default async function HomePage({
         </div>
       </section>
 
+      {/* ── Testimonials (video) ──────────────────────────────────── */}
+      <section className="bg-white py-24" style={{ borderTop: "1px solid rgba(212,175,55,0.15)" }}>
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-14 text-center">
+            <p className="mb-3 text-xs font-semibold tracking-[0.3em] text-palace-gold uppercase">Reviews</p>
+            <h2 className="section-title">{tr.testimonialsTitle}</h2>
+            <div className="gold-divider" />
+          </div>
+          <div className="flex flex-col items-center gap-6">
+            <div className="w-full max-w-sm overflow-hidden rounded-xl shadow-lg">
+              <div className="relative" style={{ paddingTop: "56.25%" }}>
+                <iframe
+                  src="https://www.youtube.com/embed/7mtXyxJcb2I"
+                  title="Yosef Trachtenberg testimonial"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 h-full w-full"
+                />
+              </div>
+            </div>
+            <div className="text-center">
+              <p className="text-lg text-palace-gold">⭐⭐⭐⭐⭐</p>
+              <p className="mt-2 max-w-md text-base italic text-palace-dark/70">
+                &ldquo;{tr.testimonialVideoQuote}&rdquo;
+              </p>
+              <p className="mt-3 font-semibold text-palace-dark">Yosef Trachtenberg</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ───────────────────────────────────────────────────── */}
+      <section className="bg-palace-cream py-24" style={{ borderTop: "1px solid rgba(212,175,55,0.15)" }}>
+        <div className="mx-auto max-w-3xl px-6">
+          <div className="mb-12 text-center">
+            <p className="mb-3 text-xs font-semibold tracking-[0.3em] text-palace-gold uppercase">FAQ</p>
+            <h2 className="section-title">{tr.faqTitle}</h2>
+            <div className="gold-divider" />
+          </div>
+          <FAQAccordion items={tr.faq as unknown as { q: string; a: string }[]} />
+        </div>
+      </section>
+
       {/* ── 1:1 Private Lessons ───────────────────────────────────── */}
-      <section className="bg-palace-cream py-24">
+      <section className="bg-white py-24" style={{ borderTop: "1px solid rgba(212,175,55,0.15)" }}>
         <div className="mx-auto max-w-6xl px-6">
           <div className="mb-14 text-center">
             <p className="mb-3 text-xs font-semibold tracking-[0.3em] text-palace-gold uppercase">Private</p>
@@ -230,34 +285,6 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* ── Testimonials ─────────────────────────────────────────── */}
-      <section className="bg-white py-24" style={{ borderTop: "1px solid rgba(212,175,55,0.15)" }}>
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="mb-14 text-center">
-            <p className="mb-3 text-xs font-semibold tracking-[0.3em] text-palace-gold uppercase">Reviews</p>
-            <h2 className="section-title">{tr.testimonialsTitle}</h2>
-            <div className="gold-divider" />
-            <p className="mx-auto mt-5 max-w-2xl text-palace-dark/55 leading-relaxed">{tr.testimonialsSubtitle}</p>
-          </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {tr.testimonials.map((item, i) => (
-              <div key={i} className="card flex flex-col gap-4" style={{ borderTop: "2px solid rgba(212,175,55,0.35)" }}>
-                <p className="text-3xl font-serif leading-none text-palace-gold/30">&ldquo;</p>
-                <p className="text-sm leading-relaxed text-palace-dark/70 italic flex-1 -mt-3">
-                  {item.text}
-                </p>
-                <div className="h-px bg-palace-gold/12" />
-                <div>
-                  <p className="font-semibold text-palace-dark text-sm">{item.name}</p>
-                  <p className="text-xs text-palace-gold mt-0.5">{item.level}</p>
-                  <p className="text-xs text-palace-dark/40 mt-0.5">{item.country}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── Footer ────────────────────────────────────────────────── */}
       <footer className="bg-palace-dark py-12 text-center" style={{ borderTop: "1px solid rgba(212,175,55,0.15)" }}>
         <p className="font-serif text-sm tracking-[0.3em] text-palace-gold/60 mb-1">YANG YAO PALACE</p>
@@ -269,6 +296,24 @@ export default async function HomePage({
           <div className="h-px w-20 bg-palace-gold/15" />
           <div className="h-1 w-1 rounded-full bg-palace-gold/30" />
           <div className="h-px w-20 bg-palace-gold/15" />
+        </div>
+        {/* Social links */}
+        <div className="mb-7 flex items-center justify-center gap-5">
+          <a href="https://instagram.com/yangyaopalace" target="_blank" rel="noopener noreferrer"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/40 transition-colors hover:border-palace-gold/40 hover:text-palace-gold/70"
+            aria-label="Instagram">
+            <span className="text-sm">📸</span>
+          </a>
+          <a href="https://tiktok.com/@yangyaopalace" target="_blank" rel="noopener noreferrer"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/40 transition-colors hover:border-palace-gold/40 hover:text-palace-gold/70"
+            aria-label="TikTok">
+            <span className="text-sm">🎵</span>
+          </a>
+          <a href="https://facebook.com/yangyaopalace" target="_blank" rel="noopener noreferrer"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/40 transition-colors hover:border-palace-gold/40 hover:text-palace-gold/70"
+            aria-label="Facebook">
+            <span className="text-sm">👥</span>
+          </a>
         </div>
         <div className="flex items-center justify-center gap-5 text-xs text-white/30">
           <Link href="/terms" className="transition-colors duration-150 hover:text-white/60">{tr.termsOfService}</Link>
