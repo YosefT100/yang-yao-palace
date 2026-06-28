@@ -123,7 +123,8 @@ export default async function HomePage({
               const levelKey = (course.level as string)?.replace(/\s/g, "") as string;
               const lessonCount = HSK_LESSONS[levelKey];
               const coursePrice = HSK_PRICES[levelKey];
-              const liveLine = `${course.sessions_per_week} ${tr.lessonsPerWeek} · ${course.lesson_duration_minutes} ${tr.minutesPerLesson}`;
+              const perWeekLabel = course.sessions_per_week === 1 ? tr.lessonPerWeek : tr.lessonsPerWeek;
+              const liveLine = `${course.sessions_per_week} ${perWeekLabel} · ${course.lesson_duration_minutes} ${tr.minutesPerLesson}`;
               const feats = [
                 liveLine,
                 tf.practice,
@@ -132,6 +133,7 @@ export default async function HomePage({
                 tf.homework,
                 tf.smallGroup,
                 ...(course.has_bonus_lesson ? [tf.bonusLesson] : []),
+                ...(hskNum >= 5 ? [tr.intensivePace] : []),
                 ...(hskNum >= 3 ? [tf.hskExam] : []),
                 ...(hskNum >= 5 ? [tf.advanced] : []),
                 tr.examPrepLesson,
