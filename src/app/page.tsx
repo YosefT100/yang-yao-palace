@@ -101,6 +101,19 @@ export default async function HomePage({
         </div>
       </section>
 
+      {/* ── Free Trial ────────────────────────────────────────────── */}
+      <section className="bg-palace-cream py-24" style={{ borderTop: "1px solid rgba(212,175,55,0.15)" }}>
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-12 text-center">
+            <p className="mb-3 text-xs font-semibold tracking-[0.3em] text-palace-gold uppercase">Free</p>
+            <h2 className="section-title">{tr.trialTitle}</h2>
+            <div className="gold-divider" />
+            <p className="mx-auto mt-5 max-w-xl text-palace-dark/55 leading-relaxed">{tr.trialSubtitle}</p>
+          </div>
+          <TrialForm />
+        </div>
+      </section>
+
       {/* ── Courses ───────────────────────────────────────────────── */}
       <section className="bg-palace-cream py-24">
         <div className="mx-auto max-w-6xl px-6">
@@ -187,19 +200,6 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* ── Free Trial ────────────────────────────────────────────── */}
-      <section className="bg-palace-cream py-24" style={{ borderTop: "1px solid rgba(212,175,55,0.15)" }}>
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="mb-12 text-center">
-            <p className="mb-3 text-xs font-semibold tracking-[0.3em] text-palace-gold uppercase">Free</p>
-            <h2 className="section-title">{tr.trialTitle}</h2>
-            <div className="gold-divider" />
-            <p className="mx-auto mt-5 max-w-xl text-palace-dark/55 leading-relaxed">{tr.trialSubtitle}</p>
-          </div>
-          <TrialForm />
-        </div>
-      </section>
-
       {/* ── Testimonials (video) ──────────────────────────────────── */}
       <section className="bg-white py-24" style={{ borderTop: "1px solid rgba(212,175,55,0.15)" }}>
         <div className="mx-auto max-w-6xl px-6">
@@ -209,10 +209,10 @@ export default async function HomePage({
             <div className="gold-divider" />
           </div>
           <div className="flex flex-col items-center gap-6">
-            <div className="w-full max-w-sm overflow-hidden rounded-xl shadow-lg">
-              <div className="relative" style={{ paddingTop: "56.25%" }}>
+            <div className="w-full max-w-xs overflow-hidden rounded-xl shadow-lg">
+              <div className="relative" style={{ paddingTop: "177.78%" }}>
                 <iframe
-                  src="https://www.youtube.com/embed/7mtXyxJcb2I"
+                  src="https://www.youtube.com/embed/7mtXyxJcb2I?rel=0"
                   title="Yosef Trachtenberg testimonial"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
