@@ -73,9 +73,13 @@ export function Sidebar({
       >
         {/* Header */}
         <div className="px-5 py-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
-          <p className="font-serif text-base font-bold tracking-[0.12em]" style={{ color: "#D4AF37" }}>
-            YANG YAO PALACE
-          </p>
+          <div className="flex items-center gap-2 mb-0.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="" className="h-8 w-8 rounded-full object-cover" />
+            <p className="font-serif text-base font-bold tracking-[0.12em]" style={{ color: "#D4AF37" }}>
+              YANG YAO PALACE
+            </p>
+          </div>
           <p className="mt-0.5 text-[10px] tracking-[0.25em] font-medium" style={{ color: "rgba(212,175,55,0.45)" }}>
             {title.toUpperCase()}
           </p>

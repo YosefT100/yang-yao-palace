@@ -103,6 +103,15 @@ const translations = {
         { q: "How many students are in each group?", a: "Maximum 10 students per group — small enough for personal attention, large enough to practice conversation." },
         { q: "Is there a certificate?", a: "Upon completing each level, you receive a Yang Yao Palace certificate of completion — and you'll be fully prepared to sit the official HSK exam, recognized worldwide." },
       ],
+      hskOutcomes: {
+        HSK1: "~150 words · greetings, introductions & basic survival",
+        HSK2: "~300 words · simple daily conversations",
+        HSK3: "~600 words · handle common everyday situations",
+        HSK4: "~1,200 words · discuss a wide range of topics",
+        HSK5: "~2,500 words · read newspapers & communicate fluently",
+        HSK6: "~5,000 words · understand any Chinese content, near-native",
+      },
+      whatsappTooltip: "Chat with us on WhatsApp",
     },
     login: {
       title: "Sign in",
@@ -251,6 +260,15 @@ const translations = {
         { q: "每个班级有多少名学生？", a: "每组最多10名学生——足够小以保证个人关注，足够大以练习对话。" },
         { q: "有证书吗？", a: "完成每个级别后，您将获得杨姚宫殿结业证书——您也将完全准备好参加全球认可的官方HSK考试。" },
       ],
+      hskOutcomes: {
+        HSK1: "约150词 · 基本问候、自我介绍与日常生存",
+        HSK2: "约300词 · 简单的日常对话",
+        HSK3: "约600词 · 应对常见日常场景",
+        HSK4: "约1,200词 · 讨论广泛话题，流利交流",
+        HSK5: "约2,500词 · 阅读报纸，流利沟通",
+        HSK6: "约5,000词 · 理解一切中文内容，接近母语水平",
+      },
+      whatsappTooltip: "通过WhatsApp联系我们",
     },
     login: {
       title: "登录",
@@ -399,6 +417,15 @@ const translations = {
         { q: "כמה תלמידים יש בכל קבוצה?", a: "מקסימום 10 תלמידים בקבוצה — קטן מספיק לתשומת לב אישית, גדול מספיק לתרגול שיחה." },
         { q: "האם יש תעודה?", a: "עם סיום כל רמה, תקבלו תעודת סיום של Yang Yao Palace — ותהיו מוכנים לחלוטין לגשת לבחינת HSK הרשמית, המוכרת בכל העולם." },
       ],
+      hskOutcomes: {
+        HSK1: "~150 מילים · ברכות, הצגה עצמית ושרידות בסיסית",
+        HSK2: "~300 מילים · שיחות יומיומיות פשוטות",
+        HSK3: "~600 מילים · התמודדות עם מצבים יומיומיים נפוצים",
+        HSK4: "~1,200 מילים · דיון במגוון רחב של נושאים",
+        HSK5: "~2,500 מילים · קריאת עיתונים ותקשורת שוטפת",
+        HSK6: "~5,000 מילים · הבנת כל תוכן סיני, כמעט שפת אם",
+      },
+      whatsappTooltip: "שוחח איתנו ב-WhatsApp",
     },
     login: {
       title: "כניסה",

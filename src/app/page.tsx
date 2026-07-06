@@ -67,9 +67,13 @@ export default async function HomePage({
             <div className="h-px w-20 bg-palace-gold/40" />
           </div>
 
-          <p className="text-xl md:text-2xl font-light tracking-[0.45em] text-white/80 uppercase">
-            Yang Yao Palace
-          </p>
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Yang Yao Palace" className="h-8 w-8 rounded-full object-cover opacity-90" />
+            <p className="text-xl md:text-2xl font-light tracking-[0.45em] text-white/80 uppercase">
+              Yang Yao Palace
+            </p>
+          </div>
 
           <p
             className="mx-auto mt-6 max-w-lg text-base md:text-lg leading-loose text-white/55"
@@ -134,8 +138,10 @@ export default async function HomePage({
                 HSK1: "$460", HSK2: "$460", HSK3: "$800", HSK4: "$800", HSK5: "$1,800", HSK6: "$2,000",
               };
               const levelKey = (course.level as string)?.replace(/\s/g, "") as string;
+              const baseLevel = levelKey.replace(/[AB]$/, "");
               const lessonCount = HSK_LESSONS[levelKey];
               const coursePrice = HSK_PRICES[levelKey];
+              const outcome = (tr.hskOutcomes as Record<string, string>)[baseLevel];
               const perWeekLabel = course.sessions_per_week === 1 ? tr.lessonPerWeek : tr.lessonsPerWeek;
               const liveLine = `${course.sessions_per_week} ${perWeekLabel} · ${course.lesson_duration_minutes} ${tr.minutesPerLesson}`;
               const feats = [
@@ -168,7 +174,12 @@ export default async function HomePage({
                       {lessonCount} {tr.examSessions}
                     </p>
                   )}
-                  <p className="mb-4 text-xs text-palace-dark/40">{tr.perCourse}</p>
+                  <p className="mb-3 text-xs text-palace-dark/40">{tr.perCourse}</p>
+                  {outcome && (
+                    <p className="mb-3 rounded-md bg-palace-gold/8 px-2.5 py-1.5 text-xs font-medium text-palace-gold/90">
+                      {outcome}
+                    </p>
+                  )}
                   <div className="mb-4 h-px bg-palace-gold/15" />
                   <ul className="mb-5 flex-1 space-y-2">
                     {feats.map((f, i) => (
