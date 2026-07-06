@@ -29,7 +29,7 @@ export default async function HomePage({
 
   return (
     <main>
-      <div style={{ position: "fixed", top: 4, right: 8, fontSize: 10, color: "#999", zIndex: 100, transform: "rotate(-12deg)" }}>{tr.bsd}</div>
+      <div style={{ position: "fixed", top: 8, right: 12, fontSize: 9, color: "#999", zIndex: 100, opacity: 0.4 }}>{tr.bsd}</div>
       <PendingEnrollHandler />
 
       {/* ── Hero ──────────────────────────────────────────────────── */}
@@ -69,7 +69,7 @@ export default async function HomePage({
 
           <div className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="Yang Yao Palace" className="h-8 w-8 rounded-full object-cover opacity-90" />
+            <img src="/logo.png" alt="" className="h-8 w-8 rounded-full object-cover border border-palace-gold/30" />
             <p className="text-xl md:text-2xl font-light tracking-[0.45em] text-white/80 uppercase">
               Yang Yao Palace
             </p>

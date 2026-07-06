@@ -14,7 +14,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const locale = getLocale();
   const tr = t(locale);
   return (
-    <html lang={locale === "he" ? "he" : locale === "zh" ? "zh" : "en"}>
+    <html lang={locale}>
       <head>
         <link rel="icon" href="/logo.png" />
         <link
@@ -29,7 +29,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {children}
         {/* WhatsApp floating button — update phone number below */}
         <a
-          href="https://wa.me/972528847770"
+          href="https://api.whatsapp.com/send?phone=972528847770"
           target="_blank"
           rel="noopener noreferrer"
           title={tr.landing.whatsappTooltip}

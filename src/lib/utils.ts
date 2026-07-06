@@ -8,13 +8,6 @@ export function formatPrice(amountCents: number, _currency: string, locale?: str
       minimumFractionDigits: 0,
     }).format(amountCents / 100 / 0.52);
   }
-  if (locale === "he") {
-    return new Intl.NumberFormat("he-IL", {
-      style: "currency",
-      currency: "ILS",
-      minimumFractionDigits: 0,
-    }).format(amountCents / 100);
-  }
   // default (en + no locale) → USD
   return new Intl.NumberFormat("en-US", {
     style: "currency",
