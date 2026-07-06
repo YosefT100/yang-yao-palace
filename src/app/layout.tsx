@@ -29,7 +29,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {children}
         {/* WhatsApp floating button — update phone number below */}
         <a
-          href="https://wa.me/972XXXXXXXXX"
+          href="https://wa.me/972528847770"
           target="_blank"
           rel="noopener noreferrer"
           title={tr.landing.whatsappTooltip}
