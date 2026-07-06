@@ -7,7 +7,7 @@ function readLocaleCookie(): Locale {
   if (typeof document === "undefined") return DEFAULT_LOCALE;
   const match = document.cookie.match(new RegExp(`(?:^|; )${LOCALE_COOKIE}=([^;]*)`));
   const c = match ? decodeURIComponent(match[1]) : "";
-  return (["en", "zh", "ru", "hi", "fil", "ar", "ja"].includes(c) ? c : DEFAULT_LOCALE) as Locale;
+  return (["en", "zh", "ru", "hi", "fil", "ar", "ja", "es", "pt"].includes(c) ? c : DEFAULT_LOCALE) as Locale;
 }
 
 export default function TrialForm() {
