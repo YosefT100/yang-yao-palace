@@ -176,9 +176,7 @@ export default async function HomePage({
                   )}
                   <p className="mb-3 text-xs text-palace-dark/40">{tr.perCourse}</p>
                   {outcome && (
-                    <p className="mb-3 rounded-md bg-palace-gold/8 px-2.5 py-1.5 text-xs font-medium text-palace-gold/90">
-                      {outcome}
-                    </p>
+                    <p className="mb-3 text-xs italic text-palace-gold/80">{outcome}</p>
                   )}
                   <div className="mb-4 h-px bg-palace-gold/15" />
                   <ul className="mb-5 flex-1 space-y-2">
