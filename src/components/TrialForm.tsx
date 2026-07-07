@@ -66,7 +66,7 @@ export default function TrialForm() {
         <textarea className="input min-h-[80px] resize-y" value={form.message} onChange={e => set("message", e.target.value)} />
       </div>
       {status === "error" && <p className="text-sm text-red-600">{tr.trialError}</p>}
-      <button type="submit" disabled={status === "loading"} className="btn-primary w-full justify-center">
+      <button type="submit" disabled={status === "loading"} className="w-full rounded-lg bg-green-600 hover:bg-green-700 py-3 text-sm font-semibold text-white transition-colors">
         {status === "loading" ? tr.trialSending : tr.trialSubmit}
       </button>
     </form>
