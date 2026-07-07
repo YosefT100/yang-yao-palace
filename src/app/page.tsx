@@ -160,12 +160,9 @@ export default async function HomePage({
               ];
               return (
                 <div key={course.id} className="card flex flex-col" style={{ borderTop: "3px solid #D4AF37" }}>
-                  <div className="mb-2 flex items-center justify-between">
+                  <div className="mb-2">
                     <span className="inline-flex items-center rounded-full bg-palace-red/8 px-2.5 py-1 text-xs font-bold text-palace-red">
                       {course.level}
-                    </span>
-                    <span className="text-sm font-bold text-palace-gold">
-                      {coursePrice ?? formatPrice(course.price_amount, course.price_currency, locale)}
                     </span>
                   </div>
                   <p className="mb-1 text-base font-semibold text-palace-dark">{course.name}</p>
@@ -189,7 +186,15 @@ export default async function HomePage({
                       </li>
                     ))}
                   </ul>
-                  <EnrollButton level={course.level as string} name={course.name as string} label={tr.enroll} />
+                  <a
+                    href="https://api.whatsapp.com/send?phone=972528847770"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary text-center text-sm"
+                    style={{ padding: "0.65rem 1.2rem", letterSpacing: "0.04em" }}
+                  >
+                    {tr.contactForPricing}
+                  </a>
                 </div>
               );
             })}
@@ -310,7 +315,7 @@ export default async function HomePage({
         </div>
         {/* Social links */}
         <div className="mb-7 flex items-center justify-center gap-5">
-          <a href="https://instagram.com/yangyaopalace" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.instagram.com/yang.yao.palace?igsh=cG9laXpjNWtuYnRr" target="_blank" rel="noopener noreferrer"
             className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/40 transition-colors hover:border-palace-gold/40 hover:text-palace-gold/70"
             aria-label="Instagram">
             <span className="text-sm">📸</span>
