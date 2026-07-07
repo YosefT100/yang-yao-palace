@@ -187,7 +187,7 @@ export default async function HomePage({
                     ))}
                   </ul>
                   <a
-                    href={`https://api.whatsapp.com/send?phone=972528847770&text=${encodeURIComponent(`Hi! I'm interested in the ${course.level} - ${course.name} course at Yang Yao Palace. Could you please send me more information about pricing and enrollment?`)}`}
+                    href={`https://api.whatsapp.com/send?phone=972528847770&text=${encodeURIComponent(`Hi! I'm interested in learning Mandarin Chinese at Yang Yao Palace.\n\nCourse: ${course.name}\n\nA few quick questions:\n1. Where are you from?\n2. How old are you?\n3. Why do you want to learn Chinese?\n\nFeel free to answer and we'll get back to you shortly! 😊`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 rounded-lg py-2 px-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
